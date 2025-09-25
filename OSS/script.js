@@ -39,6 +39,9 @@ let q2Value = "";
 
 // แสดง/ซ่อน input อื่นๆ ของ Q0
 q0.addEventListener("change", () => {
+
+  document.getElementById("q0Error").classList.add("hidden");
+    
   if (q0.value === "อื่นๆ") {
     q0Other.classList.remove("hidden");
   } else {
