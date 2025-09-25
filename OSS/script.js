@@ -14,24 +14,18 @@ const DEPARTMENT = "OSS";  // ✅ หน่วยงานนี้  ใช้�
 const DEPARTMENT_LABEL = "OSS"; // เก็บลงชีท
 
 
-// โหลด services ของทุกหน่วยงาน
+// โหลด service list จาก Google Sheet
 async function loadServices() {
   try {
-    const res = await fetch(GAS_URL);
+    const res = await fetch(`${GAS_URL}?services=${DEPARTMENT}`);
     const data = await res.json();
-
-    if (data[DEPARTMENT]) {
-      q0.innerHTML = `<option value="" disabled selected>-- กรุณาเลือก --</option>`;
-      data[DEPARTMENT].forEach(item => {
-        const opt = document.createElement("option");
-        opt.value = item;
-        opt.textContent = item;
-        q0.appendChild(opt);
-      });
-      q0.disabled = false;
-    } else {
-      q0.innerHTML = `<option disabled>ไม่พบข้อมูลบริการ</option>`;
-    }
+    q0.innerHTML = `<option value="" disabled selected>-- กรุณาเลือก --</option>`;
+    data.services.forEach(item => {
+      const opt = document.createElement("option");
+      opt.value = item;
+      opt.textContent = item;
+      q0.appendChild(opt);
+    });
   } catch (err) {
     console.error("โหลด services ไม่ได้", err);
     q0.innerHTML = `<option disabled>โหลดข้อมูลไม่สำเร็จ</option>`;
