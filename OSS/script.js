@@ -165,16 +165,8 @@ form.addEventListener("submit", async (e) => {
 
   // Reset form
   form.reset();
-  // ✅ reset ค่าในฟอร์มทั้งหมด
-  form.reset();
 
-  // ✅ ซ่อนช่อง reason และ otherService กลับไปเหมือนตอนเริ่ม
-  document.getElementById("reasonContainer").classList.add("hidden");
-  document.getElementById("otherServiceContainer").classList.add("hidden");
-
-  // ✅ เคลียร์ค่าในช่องด้วย
-  document.getElementById("otherService").value = "";
-    
+  q0Other.classList.add("hidden");
   q1Options.forEach(o => o.classList.remove("active"));
   q1Value = "";
   q2Value = "";
