@@ -181,7 +181,6 @@ form.addEventListener("submit", async (e) => {
     // ✅ ส่งข้อมูลไปเบื้องหลัง (ไม่ต้องรอผลลัพธ์)
   fetch(GAS_URL + "?cachebust=" + new Date().getTime(), {
     method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams(payload)
   }).catch(err => {
     console.error("ส่งข้อมูลไม่สำเร็จ (background)", err);
