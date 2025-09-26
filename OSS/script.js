@@ -24,7 +24,7 @@ async function loadServices() {
     q0.disabled = true;
     q0.innerHTML = `<option disabled selected>กำลังโหลด...</option>`;
 
-    const res = await fetch(JSON_URL, { cache: "force-cache" });
+    const res = await fetch(JSON_URL);
     const data = await res.json();
 
     if (data[DEPARTMENT]) {
@@ -40,10 +40,11 @@ async function loadServices() {
       q0.innerHTML = `<option disabled>ไม่พบข้อมูลบริการ</option>`;
     }
   } catch (err) {
-    console.error("โหลด services ไม่ได้", err);
+    console.error("โหลด services.json ไม่ได้", err);
     q0.innerHTML = `<option disabled>โหลดข้อมูลไม่สำเร็จ</option>`;
   }
 }
+
 loadServices();
 
 
