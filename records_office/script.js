@@ -65,11 +65,11 @@ q0.addEventListener("change", () => {
   document.getElementById("q0Error").classList.add("hidden");
 });
 
-q0Other.addEventListener("input", () => {
-  if (q0Other.value.trim() !== "") {
-    document.getElementById("q0Error").classList.add("hidden");
-  }
-});
+//q0Other.addEventListener("input", () => {
+//  if (q0Other.value.trim() !== "") {
+//    document.getElementById("q0Error").classList.add("hidden");
+//  }
+//});
 
 // Q1 logic
 q1Options.forEach(opt => {
