@@ -18,12 +18,13 @@ const JSON_URL = "https://nuchbu-stack.github.io/q0Options.json";
 
 
 
+// โหลด services
 async function loadServices() {
   try {
     q0.disabled = true;
     q0.innerHTML = `<option disabled selected>กำลังโหลด...</option>`;
 
-    const res = await fetch(JSON_URL, { cache: "no-cache" });
+    const res = await fetch(JSON_URL, { cache: "force-cache" });
     const data = await res.json();
 
     if (data[DEPARTMENT]) {
@@ -43,6 +44,7 @@ async function loadServices() {
     q0.innerHTML = `<option disabled>โหลดข้อมูลไม่สำเร็จ</option>`;
   }
 }
+loadServices();
 
 
 let q1Value = "";
