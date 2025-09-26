@@ -9,7 +9,7 @@ const submitButton = form.querySelector('button[type="submit"]');
 
 // กำหนด URL ของ Google Apps Script ไว้ในตัวแปรคงที่
 // *** แก้ไขตรงนี้: นำ Web App URL ที่ได้จากการ Deploy Code.gs มาวาง ***
-const GAS_URL = "https://script.google.com/macros/s/AKfycbw0Q6S1qkNOAt67BPBHvaCM99amAgcX_utlg5s-_Xrt2dPK1aToIPaIduthUExQcX4D/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbyGhPwMCqvXhU0TMue4AfU0TOo2Nms7Iy9kFCfun-wqYFrb7ntTB5uBUPDDXGpYoIPa/exec";
 const DEPARTMENT = "OSS";  // ✅ หน่วยงานนี้  ใช้สำหรับโหลด services
 const DEPARTMENT_LABEL = "OSS"; // เก็บลงชีท
 
