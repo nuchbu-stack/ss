@@ -37,16 +37,6 @@ select {
   font-size: 1rem;
 }
 
-/* style ปกติ */
-select {
-  width: 100%;
-  padding: 8px;
-  font-size: 1rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-
 .label {
   font-weight: 600;
   margin-bottom: 10px;
@@ -128,11 +118,7 @@ select {
   .option span {
     font-size: 14px;
   }
-
-  select {
-    font-size: 1.2rem;   /* ตัวอักษรใหญ่ขึ้น */
-    padding: 12px;       /* ช่องกว้างขึ้น */
-  }
+  
 }
 
 /* Q2 radio options ให้เรียงแนวตั้ง */
