@@ -13,14 +13,17 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbyGhPwMCqvXhU0TMue4AfU0
 const DEPARTMENT = "OSS";  // ✅ หน่วยงานนี้  ใช้สำหรับโหลด services
 const DEPARTMENT_LABEL = "OSS"; // เก็บลงชีท
 
+// ใช้สำหรับโหลดตัวเลือก Q0 จากไฟล์ JSON (เร็ว)
+const JSON_URL = "https://nuchbu-stack.github.io/q0Options.json";
 
-// โหลด services
+
+
 async function loadServices() {
   try {
     q0.disabled = true;
     q0.innerHTML = `<option disabled selected>กำลังโหลด...</option>`;
 
-    const res = await fetch(GAS_URL, { cache: "force-cache" });
+    const res = await fetch(JSON_URL, { cache: "no-cache" });
     const data = await res.json();
 
     if (data[DEPARTMENT]) {
@@ -40,7 +43,6 @@ async function loadServices() {
     q0.innerHTML = `<option disabled>โหลดข้อมูลไม่สำเร็จ</option>`;
   }
 }
-loadServices();
 
 
 let q1Value = "";
