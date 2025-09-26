@@ -168,9 +168,6 @@ form.addEventListener("submit", async (e) => {
   // ✅ reset ค่าในฟอร์มทั้งหมด
   form.reset();
 
-  // ✅ ซ่อนช่อง "ระบุเรื่องที่รับบริการ" ให้กลับไป hidden
-  document.getElementById("otherServiceContainer").classList.add("hidden");
-
   q1Options.forEach(o => o.classList.remove("active"));
   q1Value = "";
   q2Value = "";
