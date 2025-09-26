@@ -22,6 +22,8 @@ body {
   padding: 1rem;
   background: #f0f4ff;    /* ฟ้าอ่อน */
   border-radius: 12px;
+  border-bottom: 3px solid #1976d2;
+  padding-bottom: 1rem;
 }
 
 .form-header h1 {
