@@ -118,6 +118,11 @@ select {
   .option span {
     font-size: 14px;
   }
+
+  select {
+    font-size: 1.2rem;   /* ตัวอักษรใหญ่ขึ้น */
+    padding: 12px;       /* ช่องกว้างขึ้น */
+  }
 }
 
 /* Q2 radio options ให้เรียงแนวตั้ง */
