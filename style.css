@@ -24,6 +24,19 @@ h1 {
   font-weight: 600;
 }
 
+/* ให้ทุก input, select, textarea มีความกว้างเท่ากัน */
+input[type="text"],
+textarea,
+select {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
 .label {
   font-weight: 600;
   margin-bottom: 10px;
