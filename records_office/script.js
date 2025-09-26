@@ -65,11 +65,11 @@ q0.addEventListener("change", () => {
   document.getElementById("q0Error").classList.add("hidden");
 });
 
-//q0Other.addEventListener("input", () => {
-//  if (q0Other.value.trim() !== "") {
-//    document.getElementById("q0Error").classList.add("hidden");
-//  }
-//});
+q0Other.addEventListener("input", () => {
+  if (q0Other.value.trim() !== "") {
+    document.getElementById("q0Error").classList.add("hidden");
+  }
+});
 
 // Q1 logic
 q1Options.forEach(opt => {
@@ -118,7 +118,7 @@ form.addEventListener("submit", async (e) => {
   let valid = true;
 
   // Validation
-  const finalQ0 = q0.value === "อื่นๆ" ? q0Other.value.trim() : q0.value;
+  const finalQ0 = "--";
   
   if (!finalQ0) {
     document.getElementById("q0Error").classList.remove("hidden");
