@@ -37,6 +37,16 @@ select {
   font-size: 1rem;
 }
 
+/* style ปกติ */
+select {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
 .label {
   font-weight: 600;
   margin-bottom: 10px;
