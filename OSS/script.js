@@ -14,7 +14,7 @@ const DEPARTMENT = "OSS";  // ✅ หน่วยงานนี้  ใช้�
 const DEPARTMENT_LABEL = "OSS"; // เก็บลงชีท
 
 // ใช้สำหรับโหลดตัวเลือก Q0 จากไฟล์ JSON (เร็ว)
-const JSON_URL = "https://nuchbu-stack.github.io/q0Options.json";
+const JSON_URL = "https://nuchbu-stack.github.io/ss/q0Options.json";
 
 
 
