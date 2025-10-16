@@ -118,7 +118,7 @@ form.addEventListener("submit", async (e) => {
   let valid = true;
 
   // Validation
-  const finalQ0 = "--";
+  const finalQ0 = q0.value === "อื่นๆ" ? q0Other.value.trim() : q0.value;
   
   if (!finalQ0) {
     document.getElementById("q0Error").classList.remove("hidden");
