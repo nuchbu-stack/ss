@@ -336,12 +336,11 @@ select:focus {
 }
 
 
-/* ===== qUser: Grid การ์ดเลือกผู้รับบริการ ===== */
-/* ===== qUser: ทำให้เล็กลง + บังคับ 2 คอลัมน์ ===== */
+/* ===== qUser: ultra-compact, 2 คอลัมน์ ===== */
 #qUserOptions {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr)); /* บังคับ 2 คอลัมน์ */
-  gap: 8px;                                         /* ช่องไฟเล็กลง */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;                 /* ช่องไฟเล็กลง */
   margin-top: 6px;
 }
 
@@ -349,21 +348,21 @@ select:focus {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 10px;            /* เล็กลง */
+  gap: 6px;                 /* ระยะห่างข้อความกับ radio */
+  padding: 6px 8px;         /* ลด padding */
   border: 1px solid #d9e3f0;
-  border-radius: 10px;
+  border-radius: 8px;       /* มุมน้อยลง → ดูเล็กลง */
   background: #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04); /* เงาบางลง */
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
   cursor: pointer;
   user-select: none;
   transition: border-color .2s, box-shadow .2s, transform .05s;
-  min-height: 40px;             /* เตี้ยลง */
-  font-size: 0.95rem;           /* ตัวอักษรเล็กลงนิด */
-  line-height: 1.35;
+  min-height: 34px;         /* ↓ จาก 40px */
+  font-size: 0.9rem;        /* ↓ จาก 0.95rem */
+  line-height: 1.2;         /* ลด line-height */
+  white-space: normal;      /* อนุญาตให้ตัดบรรทัด */
 }
 
-/* ซ่อนวิชวลของ radio แต่ยังเข้าถึงด้วยคีย์บอร์ด/ผู้อ่านหน้าจอได้ */
 #qUserOptions .choice-card input[type="radio"] {
   position: absolute;
   opacity: 0;
@@ -371,31 +370,19 @@ select:focus {
   cursor: pointer;
 }
 
-#qUserOptions .choice-card:hover {
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-#qUserOptions .choice-card:active {
-  transform: translateY(1px);
-}
-
-/* โฟกัสด้วยคีย์บอร์ด */
-#qUserOptions .choice-card:focus-within {
-  outline: 3px solid rgba(25,118,210,0.22);
-  outline-offset: 2px;
-}
-
-/* การ์ดที่ถูกเลือก */
+/* hover/active/focus/checked (เดิม) */
+#qUserOptions .choice-card:hover { box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+#qUserOptions .choice-card:active { transform: translateY(1px); }
+#qUserOptions .choice-card:focus-within { outline: 3px solid rgba(25,118,210,0.18); outline-offset: 2px; }
 #qUserOptions .choice-card:has(input[type="radio"]:checked) {
   border-color: #1976D2;
-  box-shadow: 0 0 0 3px rgba(25,118,210,0.12);
+  box-shadow: 0 0 0 2px rgba(25,118,210,0.12);
   background: #f6faff;
   font-weight: 600;
 }
 
-/* (ตัวเลือก) ถ้าจอแคบมากจน 2 คอลัมน์แน่นเกินไป ให้แตกเป็น 1 คอลัมน์ */
+/* จอแคบมาก → 1 คอลัมน์ */
 @media (max-width: 340px) {
-  #qUserOptions {
-    grid-template-columns: 1fr;
-  }
+  #qUserOptions { grid-template-columns: 1fr; }
 }
 /* ===== qUser: Grid การ์ดเลือกผู้รับบริการ ===== */
