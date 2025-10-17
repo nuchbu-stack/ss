@@ -19,6 +19,18 @@
     <!-- ฟอร์ม -->
     <form id="surveyForm">
 
+      <!-- QUser (ผู้รับบริการ) -->
+      <div class="question" id="qUserSection">
+        <label class="label">ผู้รับบริการคือ</label>
+        <div id="qUserOptions" class="radio-group">
+          <label class="choice-card"><input type="radio" name="qUser" value="นักศึกษา"> นักศึกษา</label>
+          <label class="choice-card"><input type="radio" name="qUser" value="บุคลากรของมหาวิทยาลัย"> บุคลากรของมหาวิทยาลัย</label>
+          <label class="choice-card"><input type="radio" name="qUser" value="ผู้ปกครอง / ศิษย์เก่า"> ผู้ปกครอง / ศิษย์เก่า</label>
+          <label class="choice-card"><input type="radio" name="qUser" value="หน่วยงานภายนอก"> หน่วยงานภายนอก</label>
+        </div>
+        <div id="qUserError" class="error hidden">กรุณาเลือกผู้รับบริการ</div>
+      </div>   
+            
       <!-- Q0 -->
       <div class="question" id="q0Section">
         <label class="label">เรื่องที่รับบริการ</label>
