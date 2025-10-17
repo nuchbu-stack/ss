@@ -18,6 +18,24 @@ const DEPARTMENT_LABEL = "RecordsOffice"; // เก็บลงชีท
 const JSON_URL = "https://nuchbu-stack.github.io/ss/q0Options.json";
 
 
+// เพิ่มตัวจับเวลา + ฟังก์ชันกลับหน้าฟอร์ม
+let autoBackTimer = null;
+let countdownTimer = null;
+const autoReturnNote = document.getElementById("autoReturnNote");
+const countdownEl = document.getElementById("countdown");
+
+function backToForm() {
+  // เคลียร์ตัวจับเวลาถ้ามี
+  if (autoBackTimer) { clearTimeout(autoBackTimer); autoBackTimer = null; }
+  if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
+
+  // ซ่อน thank you และกลับมาแสดงฟอร์ม
+  thankYou.classList.add("hidden");
+  form.classList.remove("hidden");
+  // เลื่อนกลับขึ้นบน (กันกรณีฟอร์มยาว)
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 
 // โหลด services
 async function loadServices() {
@@ -191,6 +209,27 @@ form.addEventListener("submit", async (e) => {
   form.classList.add("hidden");
   thankYou.classList.remove("hidden");
 
+  // ===== เริ่มจับเวลา 10 วินาทีเพื่อกลับหน้าฟอร์มอัตโนมัติ =====
+  let remain = 10;
+  if (countdownEl) countdownEl.textContent = remain;
+  if (autoReturnNote) autoReturnNote.style.display = "block";
+
+  if (countdownTimer) { clearInterval(countdownTimer); }
+  countdownTimer = setInterval(() => {
+    remain -= 1;
+    if (countdownEl) countdownEl.textContent = remain;
+    if (remain <= 0) {
+      clearInterval(countdownTimer);
+      countdownTimer = null;
+    }
+  }, 1000);
+
+  if (autoBackTimer) { clearTimeout(autoBackTimer); }
+  autoBackTimer = setTimeout(() => {
+    backToForm();
+  }, 10000);
+  // ===== จบส่วน auto-return =====
+
   // Reset form
   form.reset();
 
@@ -212,8 +251,7 @@ form.addEventListener("submit", async (e) => {
 });
 
 
-// ปุ่มทำใหม่
+// ปุ่มทำแบบสอบถามอีกครั้ง
 document.getElementById("againBtn").addEventListener("click", () => {
-  thankYou.classList.add("hidden");
-  form.classList.remove("hidden");
+  backToForm(); // ← เรียกฟังก์ชันรวมที่เราสร้างไว้ข้างบน
 });
