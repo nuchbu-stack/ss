@@ -1,4 +1,8 @@
 {
+  "Features": {
+    "UserType": ["ASU"] 
+  },
+
   "OSS": [
     "ผ่อนผันทหาร",
     "Lost & Found (ของหาย)",
