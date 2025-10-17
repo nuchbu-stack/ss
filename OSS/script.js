@@ -36,6 +36,12 @@ function backToForm() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+function bumpCountdown() {
+  if (!countdownEl) return;
+  countdownEl.classList.remove("animate");
+  void countdownEl.offsetWidth;   // 👈 บังคับ reflow
+  countdownEl.classList.add("animate");
+}
 
 // โหลด services
 async function loadServices() {
@@ -223,7 +229,11 @@ form.addEventListener("submit", async (e) => {
   if (countdownTimer) { clearInterval(countdownTimer); }
   countdownTimer = setInterval(() => {
     remain -= 1;
-    if (countdownEl) countdownEl.textContent = remain;
+    if (countdownEl) {
+      countdownEl.textContent = remain;
+      bumpCountdown();  // 👈 เรียกทุกครั้งที่เลขเปลี่ยน
+    }
+
     if (remain <= 0) {
       clearInterval(countdownTimer);
       countdownTimer = null;
