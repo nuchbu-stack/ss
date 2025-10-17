@@ -211,7 +211,13 @@ form.addEventListener("submit", async (e) => {
 
     // ===== เริ่มจับเวลา 10 วินาทีเพื่อกลับหน้าฟอร์มอัตโนมัติ =====
   let remain = 10;
-  if (countdownEl) countdownEl.textContent = remain;
+  if (countdownEl) {
+    countdownEl.textContent = remain;
+    // เด้งครั้งแรกตอนเริ่มได้ด้วย (ถ้าชอบ)
+    countdownEl.classList.add("animate");
+    setTimeout(() => countdownEl.classList.remove("animate"), 400);
+  }
+  
   if (autoReturnNote) autoReturnNote.style.display = "block";
 
   if (countdownTimer) { clearInterval(countdownTimer); }
