@@ -81,7 +81,14 @@ function bumpCountdown() {
 
 // โหลด services
 async function loadServices() {
-  try {
+  try {   
+
+    q0.disabled = true;
+    q0.innerHTML = `<option disabled selected>กำลังโหลด...</option>`;
+
+    // กันแคช JSON (สำคัญมากเวลาเพิ่งแก้ q0Options.json)
+    const res = await fetch(JSON_URL + "?v=" + Date.now());
+    const data = await res.json();
 
     // === เปิด/ปิดคำถามผู้รับบริการตามหน่วยงาน ===
     const hasUserType = data.Features 
@@ -95,14 +102,8 @@ async function loadServices() {
     } else {
       qUserSection.classList.add("hidden");
       // ไม่มีคำถามนี้ → จะส่งค่า "--"
-    }    
-
-    q0.disabled = true;
-    q0.innerHTML = `<option disabled selected>กำลังโหลด...</option>`;
-
-    const res = await fetch(JSON_URL);
-    const data = await res.json();
-
+    } 
+    
     const list = data[DEPARTMENT]; // อนุญาตให้ไม่มี key หรือเป็น []
 
     if (Array.isArray(list) && list.length > 0) {
