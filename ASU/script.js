@@ -1,11 +1,13 @@
 const form = document.getElementById("surveyForm");
 const q0 = document.getElementById("q0");
+const q0Section = document.getElementById("q0Section");
 const q0Other = document.getElementById("q0Other");
 const q1Options = document.querySelectorAll("#q1Options .option");
 const q2Section = document.getElementById("q2Section");
 const q2Other = document.getElementById("q2Other");
 const thankYou = document.getElementById("thankYou");
 const submitButton = form.querySelector('button[type="submit"]');
+
 
 // กำหนด URL ของ Google Apps Script ไว้ในตัวแปรคงที่
 // *** แก้ไขตรงนี้: นำ Web App URL ที่ได้จากการ Deploy Code.gs มาวาง ***
@@ -27,25 +29,40 @@ async function loadServices() {
     const res = await fetch(JSON_URL);
     const data = await res.json();
 
-    if (data[DEPARTMENT]) {
+    const list = data[DEPARTMENT]; // อนุญาตให้ไม่มี key หรือเป็น []
+
+    if (Array.isArray(list) && list.length > 0) {
+      // ✅ มีข้อมูล → แสดง Q0 เป็น dropdown ปกติ
       q0.innerHTML = `<option value="" disabled selected>-- กรุณาเลือก --</option>`;
-      data[DEPARTMENT].forEach(item => {
+      list.forEach(item => {
         const opt = document.createElement("option");
         opt.value = item;
         opt.textContent = item;
         q0.appendChild(opt);
       });
       q0.disabled = false;
+      q0Section.classList.remove("hidden");
     } else {
-      q0.innerHTML = `<option disabled>ไม่พบข้อมูลบริการ</option>`;
+      // ❌ ไม่มีข้อมูล → ซ่อน Q0 และตั้งค่าที่จะบันทึกเป็น "--"
+      q0Section.classList.add("hidden");
+      q0.disabled = true;
+      q0.value = "--";
+      q0Other.value = "";
+      q0Other.classList.add("hidden");
     }
   } catch (err) {
     console.error("โหลด services.json ไม่ได้", err);
-    q0.innerHTML = `<option disabled>โหลดข้อมูลไม่สำเร็จ</option>`;
+    // กรณีโหลดไม่ได้ ก็ซ่อน Q0 เช่นกัน
+    q0Section.classList.add("hidden");
+    q0.disabled = true;
+    q0.value = "--";
+    q0Other.value = "";
+    q0Other.classList.add("hidden");
   }
 }
 
 loadServices();
+
 
 
 let q1Value = "";
@@ -117,15 +134,22 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
   let valid = true;
 
-  // Validation
-  const finalQ0 = q0.value === "อื่นๆ" ? q0Other.value.trim() : q0.value;
-  
-  if (!finalQ0) {
-    document.getElementById("q0Error").classList.remove("hidden");
-    valid = false;
+  // แทนที่โค้ดเดิมที่คำนวณ/ตรวจ Q0 ด้วยก้อนนี้
+  let finalQ0 = "--"; // ค่า default เมื่อ Q0 ถูกซ่อน
+  if (!q0Section.classList.contains("hidden")) {
+    finalQ0 = (q0.value === "อื่นๆ") ? q0Other.value.trim() : q0.value;
+
+    if (!finalQ0) {
+      document.getElementById("q0Error").classList.remove("hidden");
+      valid = false;
+    } else {
+      document.getElementById("q0Error").classList.add("hidden");
+    }
   } else {
+    // ซ่อนอยู่ → ไม่ต้องแสดง error
     document.getElementById("q0Error").classList.add("hidden");
   }
+
   
   if (!q1Value) {
     document.getElementById("q1Error").classList.remove("hidden");
