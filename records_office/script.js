@@ -13,8 +13,8 @@ const submitButton = form.querySelector('button[type="submit"]');
 // กำหนด URL ของ Google Apps Script ไว้ในตัวแปรคงที่
 // *** แก้ไขตรงนี้: นำ Web App URL ที่ได้จากการ Deploy Code.gs มาวาง ***
 const GAS_URL = "https://script.google.com/macros/s/AKfycbyGhPwMCqvXhU0TMue4AfU0TOo2Nms7Iy9kFCfun-wqYFrb7ntTB5uBUPDDXGpYoIPa/exec";
-const DEPARTMENT = "RecordsOffice";  // ✅ หน่วยงานนี้  ใช้สำหรับโหลด services
-const DEPARTMENT_LABEL = "RecordsOffice"; // เก็บลงชีท
+const DEPARTMENT = "records_office";  // ✅ หน่วยงานนี้  ใช้สำหรับโหลด services
+const DEPARTMENT_LABEL = "Records Office"; // เก็บลงชีท
 
 // ใช้สำหรับโหลดตัวเลือก Q0 จากไฟล์ JSON (เร็ว)
 const JSON_URL = "https://nuchbu-stack.github.io/ss/q0Options.json";
