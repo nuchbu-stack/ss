@@ -24,15 +24,12 @@
     "อื่นๆ"
   ],
   "clinic": [
-    "ทำแผลและหัตการต่างๆ  Dressing  wound",
     "ตรวจรักษาโดยแพทย์  Consult a doctor",
-    "เบิกยาตามอาการ/เวชภัณฑ์/วัคซีน  Receive  medication/Vaccine",
-    "ส่งตัวไปโรงพยาบาล  Refer  to  hospital",
     "เบิกยาตามอาการ/เวชภัณฑ์  Receive  medication",
-    "ให้คำแนะนำ  Give advice",
+    "ทำแผลและหัตการต่างๆ  Dressing  wound",
     "นอนพักสังเกตอาการ  Observe",
     "วัดความดันโลหิต  Check blood pressure",
-    "การอบรม/ให้ความรู้เกี่ยวกับสุขภาพ  Train/Health  teaching"
+    "การอบรม/ให้ความรู้เกี่ยวกับสุขภาพ/วัคซีน  Train/Health  teaching/Vaccine"
   ],
   "ASU": [
     "สอบถามเรื่องเรียน การลงทะเบียน ขอเอกสารจากคณะ",
