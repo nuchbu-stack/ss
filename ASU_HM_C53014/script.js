@@ -14,7 +14,7 @@ const submitButton = form.querySelector('button[type="submit"]');
 // *** แก้ไขตรงนี้: นำ Web App URL ที่ได้จากการ Deploy Code.gs มาวาง ***
 const GAS_URL = "https://script.google.com/macros/s/AKfycbyGhPwMCqvXhU0TMue4AfU0TOo2Nms7Iy9kFCfun-wqYFrb7ntTB5uBUPDDXGpYoIPa/exec";
 const DEPARTMENT = "ASU_HM";  // ✅ หน่วยงานนี้  ใช้สำหรับโหลด services
-const DEPARTMENT_LABEL = "มนุษยศาสตร์ฯ_สุภาพร"; // เก็บลงชีท
+const DEPARTMENT_LABEL = "มนุษยศาสตร์ฯ_กอบแก้ว"; // เก็บลงชีท
 
 // ใช้สำหรับโหลดตัวเลือก Q0 จากไฟล์ JSON (เร็ว)
 const JSON_URL = "https://nuchbu-stack.github.io/ss/q0Options.json";
