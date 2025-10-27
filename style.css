@@ -409,7 +409,7 @@ select:focus {
 
 /* คำบรรยายใต้ไอคอนให้เล็กลง */
 #q1Options .option span {
-  font-size: 0.6rem;        /* เดิม ~16px → ลดลง */
+  font-size: 0.8rem;        /* เดิม ~16px → ลดลง */
   line-height: 1.2;
   margin-top: 6px;
 }
@@ -418,5 +418,5 @@ select:focus {
 @media (max-width: 480px) {
   #q1Options .option { height: 88px; padding: 12px 6px; }
   #q1Options .option::first-line { font-size: 2.9rem; }
-  #q1Options .option span { font-size: 0.8rem; margin-top: 4px; }
+  #q1Options .option span { font-size: 0.6rem; margin-top: 4px; }
 }
