@@ -1,6 +1,6 @@
 {
   "Features": {
-    "UserType": ["ASU","ASU_language_institute","ASU_HM","SUP_HM","clinic"]
+    "UserType": ["ASU","ASU_language_institute","ASU_FA","ASU_HM","SUP_HM","clinic"]
   },
 
   "OSS": [
