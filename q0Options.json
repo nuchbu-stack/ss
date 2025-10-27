@@ -1,6 +1,6 @@
 {
   "Features": {
-    "UserType": ["ASU","ASU_language_institute","ASU_FA","ASU_EE","ASU_HM","SUP_HM","clinic"]
+    "UserType": ["ASU","ASU_E","ASU_language_institute","ASU_FA","ASU_EE","ASU_HM","SUP_HM","clinic"]
   },
 
   "OSS": [
@@ -47,6 +47,13 @@
     "เรื่องร้องเรียน",
     "อื่นๆ"
   ],
+  "ASU_E": [
+    "สอบถามเรื่องเรียน การลงทะเบียน กิจกรรม ขอเอกสารจากคณะ / Inquiries about study, registration, activity, or requesting documents from the faculty",
+    "ประสานงานเพื่อขอใช้ห้องต่างๆ / Coordination for room usage",
+    "ประสานงานกับหน่วยงานต่างๆ เช่น SDX จัดซื้อ จัดเลี้ยง อื่นๆ / Coordination with other departments (e.g., SDX, Purchasing, Catering, etc.)",
+    "ทำความร่วมมือกับคณะ เช่น งานวิจัย กิจกรรม โครงการต่างๆ / Collaboration with the faculty (e.g., research, activities, projects, etc.)",
+    "เรื่องร้องเรียน / Giving comments or complaints"
+  ],  
   "ASU_language_institute": [
     "การอธิบายการใช้โปรแกรม Speexx",
     "การอธิบายการสอบวัดระดับ"
