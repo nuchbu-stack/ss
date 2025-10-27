@@ -409,7 +409,7 @@ select:focus {
 
 /* คำบรรยายใต้ไอคอนให้เล็กลง */
 #q1Options .option span {
-  font-size: 0.3rem;        /* เดิม ~16px → ลดลง */
+  font-size: 0.6rem;        /* เดิม ~16px → ลดลง */
   line-height: 1.2;
   margin-top: 6px;
 }
