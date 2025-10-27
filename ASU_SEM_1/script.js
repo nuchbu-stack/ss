@@ -84,7 +84,7 @@ async function loadServices() {
   try {   
 
     q0.disabled = true;
-    q0.innerHTML = `<option disabled selected>กำลังโหลด...</option>`;
+    q0.innerHTML = `<option disabled selected>กำลังโหลด... - loading...</option>`;
 
     // กันแคช JSON (สำคัญมากเวลาเพิ่งแก้ q0Options.json)
     const res = await fetch(JSON_URL + "?v=" + Date.now());
