@@ -108,7 +108,7 @@ async function loadServices() {
 
     if (Array.isArray(list) && list.length > 0) {
       // ✅ มีข้อมูล → แสดง Q0 เป็น dropdown ปกติ
-      q0.innerHTML = `<option value="" disabled selected>-- กรุณาเลือก --</option>`;
+      q0.innerHTML = `<option value="" disabled selected>-- กรุณาเลือก - Please select --</option>`;
       list.forEach(item => {
         const opt = document.createElement("option");
         opt.value = item;
