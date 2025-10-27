@@ -392,3 +392,31 @@ select:focus {
   #qUserOptions { grid-template-columns: 1fr; }
 }
 /* ===== qUser: Grid การ์ดเลือกผู้รับบริการ ===== */
+
+
+/* --- Q1: ให้อีโมจิใหญ่ขึ้น แต่คำบรรยายเล็กลง --- */
+#q1Options .option {
+  height: 96px;              /* สูงขึ้นนิดให้สมดุลกับอีโมจิ */
+  padding: 14px 8px;
+  line-height: 1.05;
+}
+
+/* ทำบรรทัดแรก (อีโมจิ) ให้ใหญ่ขึ้น — span อยู่บรรทัดถัดไป จึงไม่โดนผล */
+#q1Options .option::first-line {
+  font-size: 2.6rem;         /* ปรับขนาดอีโมจิ */
+  line-height: 1;
+}
+
+/* คำบรรยายใต้ไอคอนให้เล็กลง */
+#q1Options .option span {
+  font-size: 0.85rem;        /* เดิม ~16px → ลดลง */
+  line-height: 1.2;
+  margin-top: 6px;
+}
+
+/* มือถือ: อีโมจิใหญ่ขึ้นอีกนิด แต่ข้อความยังเล็กอ่านง่าย */
+@media (max-width: 480px) {
+  #q1Options .option { height: 88px; padding: 12px 6px; }
+  #q1Options .option::first-line { font-size: 2.9rem; }
+  #q1Options .option span { font-size: 0.8rem; margin-top: 4px; }
+}
