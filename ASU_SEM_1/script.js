@@ -24,35 +24,45 @@ const JSON_URL = "https://nuchbu-stack.github.io/ss/q0Options.json";
 const I18N = {
   th: {
     titleMain: "แบบประเมินความพึงพอใจ",
-    titleSub: "One Stop Services",
+    titleSub: "คณะการสร้างเจ้าของธุรกิจและการบริหารกิจการ (SEM)",
+    qUser_label: "ผู้รับบริการคือ",
+    qUser_student: "นักศึกษา",
+    qUser_staff: "บุคลากรของมหาวิทยาลัย",
+    qUser_parent: "ผู้ปกครอง / ศิษย์เก่า",
+    qUser_external: "หน่วยงานภายนอก",
     q0_label: "เรื่องที่รับบริการ",
-    q0_placeholder: "— เลือก —",
+    q0_placeholder: "-- กรุณาเลือก –-",
     q1_label: "ระดับความพึงพอใจของท่าน",
-    q1_5: "พึงพอใจมากที่สุด",
-    q1_4: "พึงพอใจมาก",
+    q1_5: "มากที่สุด",
+    q1_4: "มาก",
     q1_3: "ปานกลาง",
-    q1_2: "ไม่พึงพอใจบางส่วน",
-    q1_1: "ไม่พึงพอใจมาก",
+    q1_2: "น้อย",
+    q1_1: "น้อยที่สุด",
     q2_label: "ท่านไม่พึงพอใจในเรื่องใด",
     q3_label: "ข้อเสนอแนะ/ข้อร้องเรียน",
     q3_placeholder: "พิมพ์ข้อความเพิ่มเติม",
     submit: "ส่งแบบประเมิน",
     thank_title: "ขอบคุณสำหรับการประเมิน 🙏",
     thank_desc: "เราจะนำข้อเสนอแนะไปปรับปรุงบริการให้ดียิ่งขึ้น",
-    again: "ทำอีกครั้ง"
+    again: "ทำแบบสอบถามอีกครั้ง"
   },
   en: {
-    titleMain: "Satisfaction Survey",
-    titleSub: "One Stop Services",
-    q0_label: "Service Topic",
-    q0_placeholder: "— Select —",
-    q1_label: "Your satisfaction level",
+    titleMain: "Satisfaction Evaluation Form",
+    titleSub: "School of Entrepreneurship and Management",
+    qUser_label: "Service Recipient: You are...",
+    qUser_student: "Student",
+    qUser_staff: "BU Personnel",
+    qUser_parent: "Parent / Alumnus",
+    qUser_external: "External Organization",
+    q0_label: "Service Category",
+    q0_placeholder: "-- Please select –-",
+    q1_label: "Your satisfaction/dissatisfaction level.",
     q1_5: "Most satisfied",
     q1_4: "Very satisfied",
     q1_3: "Neutral",
     q1_2: "Somewhat dissatisfied",
     q1_1: "Very dissatisfied",
-    q2_label: "Which aspect were you dissatisfied with?",
+    q2_label: "What made you dissatisfied.",
     q3_label: "Suggestions / Complaints",
     q3_placeholder: "Type your message here",
     submit: "Submit",
@@ -409,6 +419,30 @@ function applyLang(lang) {
   document.getElementById("q1Label")?.replaceChildren(document.createTextNode(t.q1_label));
   document.getElementById("q2Label")?.replaceChildren(document.createTextNode(t.q2_label));
   document.getElementById("q3Label")?.replaceChildren(document.createTextNode(t.q3_label));
+
+  // QUser label + options
+  document.getElementById("qUserLabel")
+    ?.replaceChildren(document.createTextNode(I18N[lang].qUser_label));
+
+  const mapQUser = [
+    ["qUser_student_text",  I18N[lang].qUser_student,  "นักศึกษา"],
+    ["qUser_staff_text",    I18N[lang].qUser_staff,    "บุคลากรของมหาวิทยาลัย"],
+    ["qUser_parent_text",   I18N[lang].qUser_parent,   "ผู้ปกครอง / ศิษย์เก่า"],
+    ["qUser_external_text", I18N[lang].qUser_external, "หน่วยงานภายนอก"],
+  ];
+
+  mapQUser.forEach(([id, txtEnOrTh, thaiValue]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    // แสดงสองภาษาแบบกระชับ: ไทย / EN
+    if (lang === "th") {
+      el.textContent = `${thaiValue} - ${I18N.en[id.replace("_text","")] || ""}`.trim();
+    } else {
+      el.textContent = `${txtEnOrTh}`;
+    }
+  });
+
 
   // Q1 captions
   const captions = [

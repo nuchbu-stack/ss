@@ -20,22 +20,42 @@
     <header class="form-header">
       <h1 id="title-main">แบบประเมินความพึงพอใจ</h1>
       <h2 id="title-sub">คณะการสร้างเจ้าของธุรกิจและการบริหารกิจการ (SEM)</h2>
-      <p>School of Entrepreneurship and Management</p>
     </header>
    
     <!-- ฟอร์ม -->
     <form id="surveyForm">
       <!-- QUser (ผู้รับบริการ) -->
-      <div class="question" id="qUserSection">
-        <label class="label" id="qUserLabel">ผู้รับบริการคือ - Service Recipient: You are...</label>
-        <div id="qUserOptions" class="radio-group">
-          <label class="choice-card"><input type="radio" name="qUser" value="นักศึกษา"> นักศึกษา - Student</label>
-          <label class="choice-card"><input type="radio" name="qUser" value="บุคลากรของมหาวิทยาลัย"> บุคลากรของมหาวิทยาลัย - BU Personnel</label>
-          <label class="choice-card"><input type="radio" name="qUser" value="ผู้ปกครอง / ศิษย์เก่า"> ผู้ปกครอง / ศิษย์เก่า - Parent/Alumnus</label>
-          <label class="choice-card"><input type="radio" name="qUser" value="หน่วยงานภายนอก"> หน่วยงานภายนอก - External Organization</label>
-        </div>
-        <div id="qUserError" class="error hidden">กรุณาเลือกผู้รับบริการ - Please select the service recipient.</div>
-      </div>   
+<!-- QUser (ผู้รับบริการ) -->
+<div class="question" id="qUserSection">
+  <label class="label" id="qUserLabel">ผู้รับบริการคือ - Service Recipient: You are...</label>
+
+  <div id="qUserOptions" class="radio-group">
+    <label class="choice-card" for="qUser_student">
+      <input type="radio" id="qUser_student" name="qUser" value="นักศึกษา" />
+      <span id="qUser_student_text">นักศึกษา - Student</span>
+    </label>
+
+    <label class="choice-card" for="qUser_staff">
+      <input type="radio" id="qUser_staff" name="qUser" value="บุคลากรของมหาวิทยาลัย" />
+      <span id="qUser_staff_text">บุคลากรของมหาวิทยาลัย - BU Personnel</span>
+    </label>
+
+    <label class="choice-card" for="qUser_parent">
+      <input type="radio" id="qUser_parent" name="qUser" value="ผู้ปกครอง / ศิษย์เก่า" />
+      <span id="qUser_parent_text">ผู้ปกครอง / ศิษย์เก่า - Parent/Alumnus</span>
+    </label>
+
+    <label class="choice-card" for="qUser_external">
+      <input type="radio" id="qUser_external" name="qUser" value="หน่วยงานภายนอก" />
+      <span id="qUser_external_text">หน่วยงานภายนอก - External Organization</span>
+    </label>
+  </div>
+
+  <div id="qUserError" class="error hidden">
+    กรุณาเลือกผู้รับบริการ - Please select the service recipient.
+  </div>
+</div>
+
 
       <!-- Q0 -->
       <div class="question" id="q0Section">
