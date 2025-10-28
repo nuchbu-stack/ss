@@ -395,44 +395,54 @@ select:focus {
 
 
 /* --- Q1: ให้อีโมจิใหญ่ขึ้น แต่คำบรรยายเล็กลง --- */
+/* กล่องตัวเลือก */
 #q1Options .option {
-  height: 96px;              /* สูงขึ้นนิดให้สมดุลกับอีโมจิ */
+  height: 96px;
   padding: 14px 8px;
   line-height: 1.05;
-}
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-/* ทำบรรทัดแรก (อีโมจิ) ให้ใหญ่ขึ้น — span อยู่บรรทัดถัดไป จึงไม่โดนผล */
-#q1Options .option::first-line {
-  font-size: 3.6rem;         /* ปรับขนาดอีโมจิ */
-  line-height: 1;
+  /* ทำให้อีโมจิใหญ่เป็นค่า default */
+  font-size: 3.4rem;   /* ← ขนาดอีโมจิ */
 }
 
 /* คำบรรยายใต้ไอคอนให้เล็กลง */
 #q1Options .option span {
+  /* ตัดบรรทัด */
   display: -webkit-box;
-  -webkit-line-clamp: 2;      /* ตัดที่ 2 บรรทัด */
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 
-  line-height: 1.2;
-  min-height: 2.4em;          /* 1.2 * 2 บรรทัด → สูงเท่ากันทุกปุ่ม */
+  /* layout */
   margin-top: 6px;
-  font-size: 0.9rem;          /* ปรับตามต้องการ */
+  line-height: 1.2;
+  min-height: 2.4em;   /* 2 บรรทัด → สูงเท่ากันทุกปุ่ม */
   text-align: center;
-  word-break: break-word;     /* กันคำยาว ๆ ดันเลย์เอาต์ */
+  word-break: break-word;
+
+  /* ขนาดตัวหนังสือ (ทับค่าอีโมจิ) */
+  font-size: 0.9rem;
 }
 
-/* มือถือ: อีโมจิใหญ่ขึ้นอีกนิด แต่ข้อความยังเล็กอ่านง่าย */
+/* มือถือ */
 @media (max-width: 480px) {
-  #q1Options .option { height: 88px; padding: 12px 6px; }
-  #q1Options .option::first-line { font-size: 2.9rem; }
+  #q1Options .option {
+    height: 88px;
+    padding: 12px 6px;
+    font-size: 2.8rem;     /* ← อีโมจิเล็กลงนิด */
+  }
   #q1Options .option span {
     font-size: 0.8rem;
     line-height: 1.2;
-    min-height: 2.4em;        /* ยังเท่ากันทุกปุ่ม */
+    min-height: 2.4em;
   }
 }
+
 
 /* 2 ภาษา */
 .lang-switch {
@@ -476,3 +486,5 @@ select:focus {
   background: #1565c0; /* น้ำเงินเข้มลงนิด */
   border-color: #1565c0;
 }
+
+#thankTitle { white-space: pre-line; }
