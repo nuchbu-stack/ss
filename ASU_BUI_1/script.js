@@ -118,6 +118,17 @@ if (urlLang === "th" || urlLang === "en") {
   CURRENT_LANG = urlLang;   // เช่น ?lang=en หรือ ?lang=th
 }
 
+// ---------- บังคับ EN One-time สำหรับเวอร์ชันนี้ ----------
+const LANG_BOOT_KEY = "lang_boot_v2";          // เปลี่ยนชื่อ key ได้ตามสะดวก
+if (!localStorage.getItem(LANG_BOOT_KEY) && !urlLang) {
+  // ถ้ายังไม่เคยบู๊ตเวอร์ชันนี้ และไม่ได้บังคับจาก URL → ตั้งเป็น EN
+  CURRENT_LANG = "en";
+  localStorage.setItem("lang", "en");
+  localStorage.setItem(LANG_BOOT_KEY, "1");
+}
+// -----------------------------------------------------------
+
+
 function renderHeader(lang = "th") {
   const t = I18N_HEADER[lang] || I18N_HEADER.th;
   document.getElementById("title-main").textContent = t.titleMain;
