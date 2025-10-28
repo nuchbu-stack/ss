@@ -108,7 +108,7 @@ function isOther(val) {
   // ไทย: อื่น, อื่นๆ, อื่น ๆ, อื่นๆ (โปรดระบุ) ฯลฯ
   if (/^อื่น(\s*ๆ)?/.test(s)) return true;
   // EN: other, others, other., others., other (please specify) ฯลฯ
-  if (s.startsWith('Other')) return true; // ครอบคลุม others/other./other (...)
+  if (s.startsWith('other')) return true; // ครอบคลุม others/other./other (...)
   return false;
 }
 
