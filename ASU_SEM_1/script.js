@@ -66,7 +66,7 @@ const I18N = {
     again: "ทำแบบสอบถามอีกครั้ง",
   },
   en: {
-    titleMain: "Satisfaction Survey",
+    titleMain: "Satisfaction Evaluation Form",
     titleSub: "School of Entrepreneurship and Management (SEM)",
 
     qUser_label: "Service Recipient: You are...",
@@ -441,7 +441,7 @@ function applyLang(lang) {
     ?.replaceChildren(document.createTextNode(t.titleMain));
   document.getElementById("title-sub")
     ?.replaceChildren(document.createTextNode(t.titleSub));
-    
+
 
   // QUser label & options (ต้องมี id ตามนี้ใน HTML)
   document.getElementById("qUserLabel")?.replaceChildren(document.createTextNode(t.qUser_label));
