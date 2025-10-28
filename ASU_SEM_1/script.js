@@ -555,7 +555,6 @@ function applyLang(lang) {
     }`;
   }
 
-
   // ปุ่มภาษา active
   document.querySelectorAll(".lang-btn").forEach(b =>
     b.classList.toggle("active", b.dataset.lang === lang)
@@ -571,4 +570,13 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", () => applyLang(btn.dataset.lang));
   });
   applyLang(CURRENT_LANG);
+
+  // ✅ Event delegation ให้ปุ่ม "ทำแบบสอบถามอีกครั้ง" (againBtn)
+  // ทำงานได้แม้ DOM ถูก re-render จากการสลับภาษา
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("#againBtn");
+    if (!btn) return;
+    backToForm();
+  });
+
 });
