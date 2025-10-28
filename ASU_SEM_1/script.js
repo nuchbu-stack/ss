@@ -438,32 +438,28 @@ function applyLang(lang) {
   document.getElementById("q2Label")?.replaceChildren(document.createTextNode(t.q2_label));
   document.getElementById("q3Label")?.replaceChildren(document.createTextNode(t.q3_label));
 
-  // QUser label + options
+  // QUser label
   document.getElementById("qUserLabel")
     ?.replaceChildren(document.createTextNode(I18N[lang].qUser_label));
 
-  const mapQUser = [
-    ["qUser_student_text",  I18N[lang].qUser_student,  "นักศึกษา"],
-    ["qUser_staff_text",    I18N[lang].qUser_staff,    "บุคลากรของมหาวิทยาลัย"],
-    ["qUser_parent_text",   I18N[lang].qUser_parent,   "ผู้ปกครอง / ศิษย์เก่า"],
-    ["qUser_external_text", I18N[lang].qUser_external, "หน่วยงานภายนอก"],
+  // QUser options (แสดงตามภาษาอย่างเดียว ไม่ต่อไทย-อังกฤษแล้ว)
+  const qUserMap = [
+    ["qUser_student_text",  "qUser_student"],
+    ["qUser_staff_text",    "qUser_staff"],
+    ["qUser_parent_text",   "qUser_parent"],
+    ["qUser_external_text", "qUser_external"],
   ];
 
-  mapQUser.forEach(([id, txtEnOrTh, thaiValue]) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-
-    // แสดงสองภาษาแบบกระชับ: ไทย / EN
-    if (lang === "th") {
-      el.textContent = `${thaiValue} - ${I18N.en[id.replace("_text","")] || ""}`.trim();
-    } else {
-      el.textContent = `${txtEnOrTh}`;
-    }
+  qUserMap.forEach(([spanId, key]) => {
+    const el = document.getElementById(spanId);
+    if (el) el.textContent = I18N[lang][key];
   });
 
   // QUser error message
   const qUserErr = document.getElementById("qUserError");
-  if (qUserErr) qUserErr.textContent = I18N[lang].qUser_error;  
+  if (qUserErr) qUserErr.textContent = I18N[lang].qUser_error;
+
+
 
   // Q1 captions
   const captions = [
