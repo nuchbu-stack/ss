@@ -297,18 +297,52 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
   let valid = true;
 
-  // QUser
+  // ==== QUser (ผู้รับบริการ)
   let finalQUser = "--";
-  if (!qUserSection.classList.contains("hidden")) {
+  const qUserErrEl = document.getElementById("qUserError");
+
+  // helper: โชว์ error ชัด ๆ
+  function showQUserError(msg) {
+    if (!qUserErrEl) return;
+    if (msg) qUserErrEl.textContent = msg;            // ใช้ข้อความตามภาษาแล้วแต่ CURRENT_LANG
+    qUserErrEl.classList.remove("hidden");
+    qUserErrEl.style.display = "block";               // กันเคสมี style อื่นทับ
+    qUserErrEl.setAttribute("aria-live", "assertive");
+    // เลื่อนให้เห็น + เด้งเบา ๆ
+    qUserErrEl.scrollIntoView({ behavior: "smooth", block: "center" });
+    qUserErrEl.classList.remove("shake");
+    void qUserErrEl.offsetWidth;                      // reflow
+    qUserErrEl.classList.add("shake");
+  }
+
+  function hideQUserError() {
+    if (!qUserErrEl) return;
+    qUserErrEl.classList.add("hidden");
+    qUserErrEl.style.display = ""; // คืนค่าปกติ
+  }
+
+  // ใช้การตรวจว่า “มองเห็นจริงไหม” มากกว่าดูแค่คลาส
+  const isQUserVisible = (() => {
+    const el = document.getElementById("qUserSection");
+    return !!(el && el.offsetParent !== null);        // มองเห็นใน layout จริง
+  })();
+
+  if (isQUserVisible) {
     const qUserChecked = document.querySelector("input[name='qUser']:checked");
     if (!qUserChecked) {
-      document.getElementById("qUserError")?.classList.remove("hidden");
+      const msg = (CURRENT_LANG === "th")
+        ? (I18N.th?.qUser_error || "กรุณาเลือกผู้รับบริการ")
+        : (I18N.en?.qUser_error || "Please select the service recipient.");
+      showQUserError(msg);
       valid = false;
     } else {
       finalQUser = qUserChecked.value;
-      document.getElementById("qUserError")?.classList.add("hidden");
+      hideQUserError();
     }
+  } else {
+    hideQUserError(); // ถ้าไม่ได้ใช้ QUser ก็ไม่มี error
   }
+
 
   // Q0
   let finalQ0 = "--";
@@ -456,8 +490,10 @@ function applyLang(lang) {
   });
 
   // QUser error message
+  // ข้อความ error ของ QUser ตามภาษา
   const qUserErr = document.getElementById("qUserError");
-  if (qUserErr) qUserErr.textContent = I18N[lang].qUser_error;
+  if (qUserErr) qUserErr.textContent = I18N[lang].qUser_error || qUserErr.textContent;
+
 
 
 
