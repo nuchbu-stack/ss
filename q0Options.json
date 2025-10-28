@@ -32,6 +32,35 @@
   ]
   },
 
+  "clinic": {
+  "options": [
+    {
+      "th": "ตรวจรักษาโดยแพทย์",
+      "en": "Consult a doctor"
+    },
+    {
+      "th": "เบิกยาตามอาการ/เวชภัณฑ์",
+      "en": "Receive  medication"
+    },
+    {
+      "th": "ทำแผลและหัตการต่างๆ",
+      "en": "Dressing  wound"
+    },
+    {
+      "th": "นอนพักสังเกตอาการ",
+      "en": "Observe"
+    },
+    {
+      "th": "วัดความดันโลหิต",
+      "en": "Check blood pressure"
+    },
+    {
+      "th": "การอบรม/ให้ความรู้เกี่ยวกับสุขภาพ/วัคซีน",
+      "en": "Train/Health  teaching/Vaccine"
+    }
+  ]
+  },
+
   "OSS": [
     "ผ่อนผันทหาร",
     "Lost & Found (ของหาย)",
@@ -51,14 +80,6 @@
     "ด้านเกี่ยวกับการลงทะเบียน",
     "ด้านบริการงานทะเบียนทั่วไป",
     "อื่นๆ"
-  ],
-  "clinic": [
-    "ตรวจรักษาโดยแพทย์  Consult a doctor",
-    "เบิกยาตามอาการ/เวชภัณฑ์  Receive  medication",
-    "ทำแผลและหัตการต่างๆ  Dressing  wound",
-    "นอนพักสังเกตอาการ  Observe",
-    "วัดความดันโลหิต  Check blood pressure",
-    "การอบรม/ให้ความรู้เกี่ยวกับสุขภาพ/วัคซีน  Train/Health  teaching/Vaccine"
   ],
   "scholarship": [
     "การให้คำปรึกษาเกี่ยวกับการกู้ยืม กยศ.",
