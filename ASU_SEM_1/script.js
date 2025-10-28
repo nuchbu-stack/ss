@@ -112,7 +112,11 @@ const I18N = {
 
 let CURRENT_LANG = localStorage.getItem("lang") || "th";
 
-
+function renderHeader(lang = "th") {
+  const t = I18N_HEADER[lang] || I18N_HEADER.th;
+  document.getElementById("title-main").textContent = t.titleMain;
+  document.getElementById("title-sub").textContent = t.titleSub;
+}
 
 function isOther(val) {
   if (!val) return false;
