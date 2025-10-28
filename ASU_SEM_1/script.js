@@ -25,6 +25,9 @@ const JSON_URL = "https://nuchbu-stack.github.io/ss/q0Options.json";
  ********************/
 const I18N = {
   th: {
+    titleMain: "แบบประเมินความพึงพอใจ",
+    titleSub: "คณะการสร้างเจ้าของธุรกิจและการบริหารกิจการ (SEM)",
+
     qUser_label: "ผู้รับบริการคือ",
     qUser_student: "นักศึกษา",
     qUser_staff: "บุคลากรของมหาวิทยาลัย",
@@ -63,6 +66,9 @@ const I18N = {
     again: "ทำแบบสอบถามอีกครั้ง",
   },
   en: {
+    titleMain: "Satisfaction Survey",
+    titleSub: "School of Entrepreneurship and Management (SEM)",
+
     qUser_label: "Service Recipient: You are...",
     qUser_student: "Student",
     qUser_staff: "BU Personnel",
@@ -73,7 +79,7 @@ const I18N = {
     q0_label: "Service Category",
     q0_placeholder: "-- Please select --",
     q0_error: "Please select the service topic.",
-    q0_other_placeholder: "Please specify the service topic", // <-- เพิ่มบรรทัดนี้
+    q0_other_placeholder: "Please specify the service received.", // <-- เพิ่มบรรทัดนี้
 
     q1_label: "Your satisfaction/dissatisfaction level.",
     q1_5: "Most satisfied",
@@ -101,7 +107,17 @@ const I18N = {
     again: "Submit another response",
   }
 };
+
+// เรียกทุกครั้งที่สลับภาษา
+function renderHeader(lang = "th") {
+  const t = I18N_HEADER[lang] || I18N_HEADER.th;
+  document.getElementById("title-main").textContent = t.titleMain;
+  document.getElementById("title-sub").textContent = t.titleSub;
+}
+
 let CURRENT_LANG = localStorage.getItem("lang") || "th";
+let currentLang = "th";
+renderHeader(currentLang);
 
 
 function isOther(val) {
@@ -450,7 +466,7 @@ function applyLang(lang) {
   if (q0Other) {
     q0Other.placeholder = t.q0_other_placeholder;   // <-- ตั้งตามภาษาเดียว
   }
-    
+
 
   // Q1 captions (ต้องมี .option-X span)
   [
