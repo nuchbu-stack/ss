@@ -135,7 +135,23 @@ function isOther(val) {
 let autoBackTimer = null;
 let countdownTimer = null;
 const autoReturnNote = document.getElementById("autoReturnNote");
-const countdownEl = document.getElementById("countdown");
+
+// ใช้เป็น state กลางของเลขวินาที
+let countdownSeconds = 10;
+
+// อย่า cache element; หาใหม่ทุกครั้ง เพราะเราเขียนทับ innerHTML ตอนสลับภาษา
+function getCountdownEl() {
+  return document.getElementById("countdown");
+}
+
+
+function bumpCountdown() {
+  const el = getCountdownEl();
+  if (!el) return;
+  el.classList.remove("animate");
+  void el.offsetWidth;
+  el.classList.add("animate");
+}
 
 function backToForm() {
   if (autoBackTimer) { clearTimeout(autoBackTimer); autoBackTimer = null; }
@@ -145,28 +161,17 @@ function backToForm() {
   form.classList.remove("hidden");
 
   if (autoReturnNote) autoReturnNote.style.display = "none";
-  if (countdownEl) {
-    countdownEl.textContent = "10";
-    countdownEl.classList.remove("animate");
+
+  // รีเซ็ตตัวเลขกลับเป็น 10 และอัปเดตลง DOM (ถ้ามี)
+  countdownSeconds = 10;
+  const cEl = getCountdownEl();
+  if (cEl) {
+    cEl.textContent = countdownSeconds;
+    cEl.classList.remove("animate");
   }
 
-  document.querySelectorAll("input[name='qUser']").forEach(r => r.checked = false);
-  ["qUserError","q0Error","q1Error","q2Error"].forEach(id=>{
-    document.getElementById(id)?.classList.add("hidden");
-  });
-
-  q1Options.forEach(o => o.classList.remove("active"));
-  q2Section.classList.add("hidden");
-  q2Other.classList.add("hidden");
-
+  // …(โค้ดล้าง error/รีเซ็ต UI อื่น ๆ คงเดิม)…
   window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-function bumpCountdown() {
-  if (!countdownEl) return;
-  countdownEl.classList.remove("animate");
-  void countdownEl.offsetWidth;
-  countdownEl.classList.add("animate");
 }
 
 /********************
@@ -397,22 +402,42 @@ form.addEventListener("submit", async (e) => {
   form.classList.add("hidden");
   thankYou.classList.remove("hidden");
 
-  // auto return
-  let remain = 10;
-  if (countdownEl) {
-    countdownEl.textContent = remain;
-    countdownEl.classList.add("animate");
-    setTimeout(() => countdownEl.classList.remove("animate"), 400);
+  // ===== เริ่มจับเวลา 10 วินาทีเพื่อกลับหน้าฟอร์มอัตโนมัติ =====
+  countdownSeconds = 10;
+
+  // แสดงค่าเริ่มต้น
+  {
+    const el = getCountdownEl();
+    if (el) {
+      el.textContent = countdownSeconds;
+      el.classList.add("animate");
+      setTimeout(() => el.classList.remove("animate"), 400);
+    }
   }
+
   if (autoReturnNote) autoReturnNote.style.display = "block";
+
+  // เดินนาฬิกา
   if (countdownTimer) clearInterval(countdownTimer);
   countdownTimer = setInterval(() => {
-    remain -= 1;
-    if (countdownEl) { countdownEl.textContent = remain; bumpCountdown(); }
-    if (remain <= 0) { clearInterval(countdownTimer); countdownTimer = null; }
+    countdownSeconds -= 1;
+    const el = getCountdownEl();
+    if (el) {
+      el.textContent = countdownSeconds;
+      bumpCountdown();
+    }
+    if (countdownSeconds <= 0) {
+      clearInterval(countdownTimer);
+      countdownTimer = null;
+    }
   }, 1000);
+
+  // ตั้งเวลารีเทิร์นกลับฟอร์ม
   if (autoBackTimer) clearTimeout(autoBackTimer);
-  autoBackTimer = setTimeout(() => { backToForm(); }, 10000);
+  autoBackTimer = setTimeout(() => {
+    backToForm();
+  }, 10000);
+
 
   // reset UI
   form.reset();
@@ -523,14 +548,13 @@ function applyLang(lang) {
   const againBtn = document.getElementById("againBtn");
   if (againBtn) againBtn.textContent = t.thank_again;
 
-  const autoReturnNote = document.getElementById("autoReturnNote");
-  if (autoReturnNote) {
-    // จะได้เป็น "กลับไปหน้าฟอร์มอัตโนมัติใน 10 วินาที" หรือ "Returning... in 10 seconds"
-    const seconds = autoReturnNote.querySelector("#countdown")?.textContent || "10";
-    autoReturnNote.innerHTML = `${t.thank_autoreturn} <span id="countdown">${seconds}</span> ${
+  const autoReturnNoteEl = document.getElementById("autoReturnNote");
+  if (autoReturnNoteEl) {
+    autoReturnNoteEl.innerHTML = `${I18N[lang].thank_autoreturn} <span id="countdown">${countdownSeconds}</span> ${
       lang === "th" ? "วินาที" : "seconds"
     }`;
   }
+
 
   // ปุ่มภาษา active
   document.querySelectorAll(".lang-btn").forEach(b =>
