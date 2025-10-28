@@ -109,7 +109,6 @@ const I18N = {
 };
 
 
-
 let CURRENT_LANG = localStorage.getItem("lang") || "th";
 
 function renderHeader(lang = "th") {
@@ -436,6 +435,13 @@ function applyLang(lang) {
   CURRENT_LANG = lang;
   localStorage.setItem("lang", lang);
   const t = I18N[lang];
+
+  // ▼ เปลี่ยนหัวข้อ
+  document.getElementById("title-main")
+    ?.replaceChildren(document.createTextNode(t.titleMain));
+  document.getElementById("title-sub")
+    ?.replaceChildren(document.createTextNode(t.titleSub));
+    
 
   // QUser label & options (ต้องมี id ตามนี้ใน HTML)
   document.getElementById("qUserLabel")?.replaceChildren(document.createTextNode(t.qUser_label));
