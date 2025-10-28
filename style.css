@@ -425,8 +425,41 @@ select:focus {
 .lang-switch {
   display: flex; gap: 8px; justify-content: flex-end; margin-bottom: 10px;
 }
+/* ปุ่มภาษา: ปกติพื้นขาว ขอบเทา */
 .lang-btn {
-  padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 8px;
-  background: #fff; cursor: pointer; font-size: 0.95rem;
+  padding: 6px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;          /* พื้นขาว */
+  color: #1f2937;            /* ตัวอักษรเทาเข้ม */
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background .2s, color .2s, border-color .2s, box-shadow .2s;
 }
-.lang-btn.active { border-color: #1976D2; box-shadow: 0 0 0 2px rgba(25,118,210,.15); }
+
+/* hover: พื้นน้ำเงิน ตัวอักษรขาว */
+.lang-btn:hover {
+  background: #1976D2;
+  color: #fff;
+  border-color: #1976D2;
+}
+
+/* focus: มีเส้นเงาย้ำโฟกัส (สำหรับคีย์บอร์ด) */
+.lang-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(25,118,210,.25);
+}
+
+/* สถานะเลือกอยู่ (active) = พื้นน้ำเงินถาวร */
+.lang-btn.active {
+  background: #1976D2;
+  color: #fff;
+  border-color: #1976D2;
+  box-shadow: 0 0 0 2px rgba(25,118,210,.15);
+}
+
+/* ถ้าอยากให้ active แล้วยัง hover ต่อ ก็คงสีน้ำเงินไว้ */
+.lang-btn.active:hover {
+  background: #1565c0; /* น้ำเงินเข้มลงนิด */
+  border-color: #1565c0;
+}
