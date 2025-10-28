@@ -25,21 +25,26 @@ const I18N = {
   th: {
     titleMain: "แบบประเมินความพึงพอใจ",
     titleSub: "คณะการสร้างเจ้าของธุรกิจและการบริหารกิจการ (SEM)",
+
     qUser_label: "ผู้รับบริการคือ",
     qUser_student: "นักศึกษา",
     qUser_staff: "บุคลากรของมหาวิทยาลัย",
     qUser_parent: "ผู้ปกครอง / ศิษย์เก่า",
     qUser_external: "หน่วยงานภายนอก",
-    qUserError: "กรุณาเลือกผู้รับบริการ",
+    qUser_error: "กรุณาเลือกผู้รับบริการ",
+
     q0_label: "เรื่องที่รับบริการ",
-    q0_placeholder: "-- กรุณาเลือก –-",
+    q0_placeholder: "-- กรุณาเลือก --",
+    q0_error: "กรุณาเลือกเรื่องที่รับบริการ",
+
     q1_label: "ระดับความพึงพอใจของท่าน",
     q1_5: "มากที่สุด",
     q1_4: "มาก",
     q1_3: "ปานกลาง",
     q1_2: "น้อย",
     q1_1: "น้อยที่สุด",
-    q2_label: "ท่านไม่พึงพอใจในเรื่องใด",
+    q1_error: "กรุณาเลือกระดับความพึงพอใจ",
+
     q2_label: "ท่านไม่พึงพอใจในเรื่องใด",
     q2_opt_staff: "มรรยาทและความเต็มใจในการให้บริการ",
     q2_opt_delay: "ระยะเวลาที่ใช้ในการให้บริการ",
@@ -48,8 +53,10 @@ const I18N = {
     q2_opt_other: "อื่นๆ",
     q2_other_placeholder: "โปรดระบุ",
     q2_error: "กรุณาเลือกหรือระบุเรื่องที่ไม่พึงพอใจ",
+
     q3_label: "ข้อเสนอแนะ/ข้อร้องเรียน",
     q3_placeholder: "พิมพ์ข้อความเพิ่มเติม",
+
     submit: "ส่งแบบประเมิน",
     thank_title: "ขอบคุณสำหรับการประเมิน 🙏",
     thank_desc: "เราจะนำข้อเสนอแนะไปปรับปรุงบริการให้ดียิ่งขึ้น",
@@ -58,21 +65,26 @@ const I18N = {
   en: {
     titleMain: "Satisfaction Evaluation Form",
     titleSub: "School of Entrepreneurship and Management",
+
     qUser_label: "Service Recipient: You are...",
     qUser_student: "Student",
     qUser_staff: "BU Personnel",
     qUser_parent: "Parent / Alumnus",
     qUser_external: "External Organization",
-    qUserError: "Please select the service recipient.",
+    qUser_error: "Please select the service recipient.",
+
     q0_label: "Service Category",
-    q0_placeholder: "-- Please select –-",
+    q0_placeholder: "-- Please select --",
+    q0_error: "Please select the service topic.",
+
     q1_label: "Your satisfaction/dissatisfaction level.",
     q1_5: "Most satisfied",
     q1_4: "Very satisfied",
     q1_3: "Neutral",
     q1_2: "Somewhat dissatisfied",
     q1_1: "Very dissatisfied",
-    q2_label: "What made you dissatisfied.",
+    q1_error: "Please select your satisfaction level.",
+
     q2_label: "Which aspect were you dissatisfied with?",
     q2_opt_staff: "Manner and willingness of the staff",
     q2_opt_delay: "Time taken to provide the service",
@@ -81,8 +93,10 @@ const I18N = {
     q2_opt_other: "Others",
     q2_other_placeholder: "Please specify",
     q2_error: "Please select or specify what made you dissatisfied",
+
     q3_label: "Suggestions / Complaints",
     q3_placeholder: "Type your message here",
+
     submit: "Submit",
     thank_title: "Thanks for your feedback 🙏",
     thank_desc: "We’ll use it to improve our services.",
@@ -125,8 +139,8 @@ function backToForm() {
   if (q2Err) q2Err.classList.add("hidden");
 
   q1Options.forEach(o => o.classList.remove("active"));
-  q1Value = "";
-  q2Value = "";
+  let q1Value = ""; // local reset if needed
+  let q2Value = "";
   q2Section.classList.add("hidden");
   q2Other.classList.add("hidden");
 
@@ -141,43 +155,52 @@ function bumpCountdown() {
 }
 
 /********************
+ * Error text helpers (update while visible)
+ ********************/
+function setErrorText(elId, i18nKey) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  const t = I18N[CURRENT_LANG]?.[i18nKey];
+  if (t) el.textContent = t;
+}
+
+function updateErrorTexts() {
+  setErrorText("qUserError", "qUser_error");
+  setErrorText("q0Error", "q0_error");
+  setErrorText("q1Error", "q1_error");
+  setErrorText("q2Error", "q2_error");
+}
+
+/********************
  * Load Services (Q0)
- * - รองรับ q0Options.json แบบผสม:
- *   1) array ของ string (ไทยล้วน)
- *   2) object { hasServices, options:[string | {th,en}] }
- * - รองรับ Features.UserType เพื่อแสดง/ซ่อน qUserSection
  ********************/
 async function loadServices() {
   try {
     q0.disabled = true;
     q0.innerHTML = `<option disabled selected>${I18N[CURRENT_LANG].q0_placeholder}</option>`;
 
-    const res = await fetch(JSON_URL + "?v=" + Date.now()); // กัน cache เวลาเพิ่งแก้
+    const res = await fetch(JSON_URL + "?v=" + Date.now());
     const data = await res.json();
 
-    // === แสดง/ซ่อน QUser ตาม Features.UserType ===
+    // QUser on/off by Features.UserType
     const hasUserType = data.Features
       && Array.isArray(data.Features.UserType)
       && data.Features.UserType.includes(DEPARTMENT);
 
     if (hasUserType) {
       qUserSection?.classList.remove("hidden");
-      const qUserErr = document.getElementById("qUserError");
-      if (qUserErr) qUserErr.classList.add("hidden");
+      document.getElementById("qUserError")?.classList.add("hidden");
     } else {
       qUserSection?.classList.add("hidden");
     }
 
-    // === ค่าของหน่วยงาน ===
+    // Department config
     let conf = data[DEPARTMENT];
-
-    // รองรับรูปแบบเดิมที่เป็น array (ไทยล้วน)
     if (Array.isArray(conf)) {
       conf = { hasServices: true, options: conf };
     }
 
     if (!conf || conf.hasServices === false) {
-      // ไม่มี Q0 สำหรับหน่วยนี้
       q0Section?.classList.add("hidden");
       q0.required = false;
       q0.disabled = false;
@@ -187,7 +210,7 @@ async function loadServices() {
       return;
     }
 
-    // เติม options โดยดูภาษาปัจจุบัน
+    // fill options by current lang
     q0.innerHTML = `<option value="" disabled selected>${I18N[CURRENT_LANG].q0_placeholder}</option>`;
     conf.options.forEach(item => {
       const text = (typeof item === "string")
@@ -195,7 +218,7 @@ async function loadServices() {
         : (item[CURRENT_LANG] || item.th || item.en || "");
       if (!text) return;
       const opt = document.createElement("option");
-      opt.value = text;          // เก็บค่าเป็นข้อความที่เห็น (ง่ายสุด)
+      opt.value = text;
       opt.textContent = text;
       q0.appendChild(opt);
     });
@@ -206,7 +229,6 @@ async function loadServices() {
 
   } catch (err) {
     console.error("โหลด services.json ไม่ได้", err);
-    // โหลดไม่ได้ → ซ่อน Q0
     q0Section?.classList.add("hidden");
     q0.disabled = true;
     q0.value = "--";
@@ -215,7 +237,7 @@ async function loadServices() {
   }
 }
 
-// ครั้งแรก
+// initial load
 loadServices();
 
 /********************
@@ -301,57 +323,48 @@ form.addEventListener("submit", async (e) => {
   let finalQUser = "--";
   const qUserErrEl = document.getElementById("qUserError");
 
-  // helper: โชว์ error ชัด ๆ
-  function showQUserError(msg) {
+  function showQUserError() {
+    setErrorText("qUserError", "qUser_error"); // <- ดึงจาก I18N เสมอ
     if (!qUserErrEl) return;
-    if (msg) qUserErrEl.textContent = msg;            // ใช้ข้อความตามภาษาแล้วแต่ CURRENT_LANG
     qUserErrEl.classList.remove("hidden");
-    qUserErrEl.style.display = "block";               // กันเคสมี style อื่นทับ
+    qUserErrEl.style.display = "block";
     qUserErrEl.setAttribute("aria-live", "assertive");
-    // เลื่อนให้เห็น + เด้งเบา ๆ
-    qUserErrEl.scrollIntoView({ behavior: "smooth", block: "center" });
-    qUserErrEl.classList.remove("shake");
-    void qUserErrEl.offsetWidth;                      // reflow
-    qUserErrEl.classList.add("shake");
   }
 
   function hideQUserError() {
     if (!qUserErrEl) return;
     qUserErrEl.classList.add("hidden");
-    qUserErrEl.style.display = ""; // คืนค่าปกติ
+    qUserErrEl.style.display = "";
   }
 
-  // ใช้การตรวจว่า “มองเห็นจริงไหม” มากกว่าดูแค่คลาส
   const isQUserVisible = (() => {
     const el = document.getElementById("qUserSection");
-    return !!(el && el.offsetParent !== null);        // มองเห็นใน layout จริง
+    return !!(el && el.offsetParent !== null);
   })();
 
   if (isQUserVisible) {
     const qUserChecked = document.querySelector("input[name='qUser']:checked");
     if (!qUserChecked) {
-      const msg = (CURRENT_LANG === "th")
-        ? (I18N.th?.qUser_error || "กรุณาเลือกผู้รับบริการ")
-        : (I18N.en?.qUser_error || "Please select the service recipient.");
-      showQUserError(msg);
+      showQUserError();
       valid = false;
     } else {
       finalQUser = qUserChecked.value;
       hideQUserError();
     }
   } else {
-    hideQUserError(); // ถ้าไม่ได้ใช้ QUser ก็ไม่มี error
+    hideQUserError();
   }
 
-
-  // Q0
+  // ==== Q0
   let finalQ0 = "--";
   if (!q0Section.classList.contains("hidden")) {
-    finalQ0 = (q0.value === "อื่นๆ" || q0.value === "Other" || q0.value === "อื่นๆ (โปรดระบุ)" || q0.value === "Other (please specify)")
-      ? q0Other.value.trim()
-      : q0.value;
+    finalQ0 = (q0.value === "อื่นๆ" || q0.value === "Other" ||
+               q0.value === "อื่นๆ (โปรดระบุ)" || q0.value === "Other (please specify)")
+              ? q0Other.value.trim()
+              : q0.value;
 
     if (!finalQ0) {
+      setErrorText("q0Error", "q0_error"); // <- อัปเดตตามภาษา
       document.getElementById("q0Error")?.classList.remove("hidden");
       valid = false;
     } else {
@@ -361,26 +374,30 @@ form.addEventListener("submit", async (e) => {
     document.getElementById("q0Error")?.classList.add("hidden");
   }
 
-  // Q1
+  // ==== Q1
   if (!q1Value) {
+    setErrorText("q1Error", "q1_error"); // <- อัปเดตตามภาษา
     document.getElementById("q1Error")?.classList.remove("hidden");
     valid = false;
   } else {
     document.getElementById("q1Error")?.classList.add("hidden");
   }
 
-  // Q2
+  // ==== Q2
   let finalQ2 = "";
   if (q1Value === "1" || q1Value === "2") {
     const q2Checked = document.querySelector("input[name='q2']:checked");
     if (!q2Checked) {
+      setErrorText("q2Error", "q2_error"); // <- อัปเดตตามภาษา
       document.getElementById("q2Error")?.classList.remove("hidden");
       valid = false;
     } else {
       finalQ2 = (q2Checked.value === "อื่นๆ" || q2Checked.value?.toLowerCase() === "other")
         ? q2Other.value.trim()
         : q2Checked.value;
+
       if ((q2Checked.value === "อื่นๆ" || q2Checked.value?.toLowerCase() === "other") && !finalQ2) {
+        setErrorText("q2Error", "q2_error");
         document.getElementById("q2Error")?.classList.remove("hidden");
         valid = false;
       } else {
@@ -404,7 +421,7 @@ form.addEventListener("submit", async (e) => {
   form.classList.add("hidden");
   thankYou.classList.remove("hidden");
 
-  // เริ่มจับเวลา auto return
+  // Auto return
   let remain = 10;
   if (countdownEl) {
     countdownEl.textContent = remain;
@@ -438,7 +455,7 @@ form.addEventListener("submit", async (e) => {
   document.querySelectorAll('input[name="qUser"]').forEach(r => (r.checked = false));
   document.getElementById("qUserError")?.classList.add("hidden");
 
-  // ส่งเบื้องหลัง
+  // Background send
   fetch(GAS_URL + "?cachebust=" + Date.now(), {
     method: "POST",
     body: new URLSearchParams(payload)
@@ -454,60 +471,44 @@ document.getElementById("againBtn").addEventListener("click", () => {
 
 /********************
  * Language switch
- * - คาดว่าใน HTML มีปุ่ม .lang-btn[data-lang="th|en"]
- * - รองรับกรณีไม่มี element บางตัว (ใช้ ?. / เช็ค null)
  ********************/
 function applyLang(lang) {
   CURRENT_LANG = lang;
   localStorage.setItem("lang", lang);
   const t = I18N[lang];
 
-  // Header texts (ถ้ามี id ตามนี้)
+  // Header
   document.getElementById("title-main")?.replaceChildren(document.createTextNode(t.titleMain));
   document.getElementById("title-sub")?.replaceChildren(document.createTextNode(t.titleSub));
 
-  // Labels (ถ้ามี id ตามนี้ใน HTML)
+  // Labels
   document.getElementById("q0Label")?.replaceChildren(document.createTextNode(t.q0_label));
   document.getElementById("q1Label")?.replaceChildren(document.createTextNode(t.q1_label));
   document.getElementById("q2Label")?.replaceChildren(document.createTextNode(t.q2_label));
   document.getElementById("q3Label")?.replaceChildren(document.createTextNode(t.q3_label));
 
-  // QUser label
-  document.getElementById("qUserLabel")
-    ?.replaceChildren(document.createTextNode(I18N[lang].qUser_label));
-
-  // QUser options (แสดงตามภาษาอย่างเดียว ไม่ต่อไทย-อังกฤษแล้ว)
-  const qUserMap = [
+  // QUser label & options
+  document.getElementById("qUserLabel")?.replaceChildren(document.createTextNode(I18N[lang].qUser_label));
+  [
     ["qUser_student_text",  "qUser_student"],
     ["qUser_staff_text",    "qUser_staff"],
     ["qUser_parent_text",   "qUser_parent"],
     ["qUser_external_text", "qUser_external"],
-  ];
-
-  qUserMap.forEach(([spanId, key]) => {
+  ].forEach(([spanId, key]) => {
     const el = document.getElementById(spanId);
     if (el) el.textContent = I18N[lang][key];
   });
 
-  // QUser error message
-  // ข้อความ error ของ QUser ตามภาษา
-  const qUserErr = document.getElementById("qUserError");
-  if (qUserErr) qUserErr.textContent = I18N[lang].qUser_error || qUserErr.textContent;
-
-
-
-
   // Q1 captions
-  const captions = [
-    { sel: ".option-5 span", txt: t.q1_5 },
-    { sel: ".option-4 span", txt: t.q1_4 },
-    { sel: ".option-3 span", txt: t.q1_3 },
-    { sel: ".option-2 span", txt: t.q1_2 },
-    { sel: ".option-1 span", txt: t.q1_1 }
-  ];
-  captions.forEach(c => {
-    const el = document.querySelector(c.sel);
-    if (el) el.textContent = c.txt;
+  [
+    [".option-5 span", t.q1_5],
+    [".option-4 span", t.q1_4],
+    [".option-3 span", t.q1_3],
+    [".option-2 span", t.q1_2],
+    [".option-1 span", t.q1_1],
+  ].forEach(([sel, txt]) => {
+    const el = document.querySelector(sel);
+    if (el) el.textContent = txt;
   });
 
   // Q0 placeholder
@@ -516,33 +517,26 @@ function applyLang(lang) {
     if (first) first.textContent = t.q0_placeholder;
   }
 
-  // --- Q2 texts ---
-  document.getElementById("q2Label")
-    ?.replaceChildren(document.createTextNode(I18N[lang].q2_label));
-
-  const mapQ2 = [
+  // Q2 texts
+  document.getElementById("q2Label")?.replaceChildren(document.createTextNode(I18N[lang].q2_label));
+  [
     ["q2_opt_staff_text",   I18N[lang].q2_opt_staff],
     ["q2_opt_delay_text",   I18N[lang].q2_opt_delay],
     ["q2_opt_accuracy_text",I18N[lang].q2_opt_accuracy],
     ["q2_opt_facility_text",I18N[lang].q2_opt_facility],
     ["q2_opt_other_text",   I18N[lang].q2_opt_other],
-  ];
-  mapQ2.forEach(([id, txt]) => {
+  ].forEach(([id, txt]) => {
     const el = document.getElementById(id);
     if (el) el.textContent = txt;
   });
 
-  // placeholder ของช่อง "อื่นๆ"
-  const q2Other = document.getElementById("q2Other");
-  if (q2Other) q2Other.placeholder = 
-    (lang === "th")
+  // Q2 other placeholder
+  const q2OtherEl = document.getElementById("q2Other");
+  if (q2OtherEl) {
+    q2OtherEl.placeholder = (lang === "th")
       ? `${I18N.th.q2_other_placeholder} / ${I18N.en.q2_other_placeholder}`
       : I18N.en.q2_other_placeholder;
-
-  // ข้อความ error Q2
-  const q2Err = document.getElementById("q2Error");
-  if (q2Err) q2Err.textContent = I18N[lang].q2_error;
-
+  }
 
   // Q3 placeholder
   const q3 = document.getElementById("q3");
@@ -557,14 +551,19 @@ function applyLang(lang) {
   const againBtn = document.getElementById("againBtn");
   if (againBtn) againBtn.textContent = t.again;
 
-  // ปุ่มภาษา active state
-  document.querySelectorAll(".lang-btn").forEach(b => b.classList.toggle("active", b.dataset.lang === lang));
+  // Active lang button
+  document.querySelectorAll(".lang-btn").forEach(b =>
+    b.classList.toggle("active", b.dataset.lang === lang)
+  );
 
-  // รีเรนเดอร์ Q0 ให้ตรงภาษา
+  // Reload Q0 options for the chosen language
   loadServices();
+
+  // ✅ Update any visible error texts to current language
+  updateErrorTexts();
 }
 
-// bind ปุ่มภาษา + set initial language
+// bind language buttons + initial
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".lang-btn").forEach(btn => {
     btn.addEventListener("click", () => applyLang(btn.dataset.lang));
