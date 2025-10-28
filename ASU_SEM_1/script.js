@@ -61,9 +61,10 @@ const I18N = {
     q3_placeholder: "พิมพ์ข้อความเพิ่มเติม",
 
     submit: "ส่งแบบประเมิน",
-    thank_title: "ขอบคุณสำหรับการประเมิน 🙏",
-    thank_desc: "เราจะนำข้อเสนอแนะไปปรับปรุงบริการให้ดียิ่งขึ้น",
-    again: "ทำแบบสอบถามอีกครั้ง",
+    thank_title: "รับข้อมูลเรียบร้อยแล้ว ขอบคุณค่ะ 🙏",
+    thank_desc: "คุณสามารถเลือกทำแบบสอบถามใหม่หรือปิดหน้านี้ได้",
+    thank_autoreturn: "กลับไปหน้าฟอร์มอัตโนมัติใน",
+    thank_again: "ทำแบบสอบถามอีกครั้ง",
   },
   en: {
     titleMain: "Satisfaction Evaluation Form",
@@ -102,9 +103,10 @@ const I18N = {
     q3_placeholder: "Type your message here",
 
     submit: "Submit",
-    thank_title: "Thanks for your feedback 🙏",
-    thank_desc: "We’ll use it to improve our services.",
-    again: "Submit another response",
+    thank_title: "Your response has been successfully recorded. Thank you 🙏",
+    thank_desc: "You may choose to complete another survey or close this page.",
+    thank_autoreturn: "Returning to the form automatically in",
+    thank_again: "Submit another response",
   }
 };
 
@@ -510,7 +512,26 @@ function applyLang(lang) {
 
   const submitBtn = document.getElementById("submitBtn");
   if (submitBtn) submitBtn.textContent = t.submit;   // <<< บรรทัดนี้สำคัญ
-    
+
+  // Thank You texts
+  const thankTitle = document.getElementById("thankTitle");
+  if (thankTitle) thankTitle.textContent = t.thank_title;
+
+  const thankDesc = document.getElementById("thankDesc");
+  if (thankDesc) thankDesc.textContent = t.thank_desc;
+
+  const againBtn = document.getElementById("againBtn");
+  if (againBtn) againBtn.textContent = t.thank_again;
+
+  const autoReturnNote = document.getElementById("autoReturnNote");
+  if (autoReturnNote) {
+    // จะได้เป็น "กลับไปหน้าฟอร์มอัตโนมัติใน 10 วินาที" หรือ "Returning... in 10 seconds"
+    const seconds = autoReturnNote.querySelector("#countdown")?.textContent || "10";
+    autoReturnNote.innerHTML = `${t.thank_autoreturn} <span id="countdown">${seconds}</span> ${
+      lang === "th" ? "วินาที" : "seconds"
+    }`;
+  }
+
   // ปุ่มภาษา active
   document.querySelectorAll(".lang-btn").forEach(b =>
     b.classList.toggle("active", b.dataset.lang === lang)
