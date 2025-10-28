@@ -3,6 +3,35 @@
     "UserType": ["ASU","ASU_E","ASU_language_institute","ASU_FA","ASU_EE","ASU_HM","SUP_HM","clinic"]
   },
 
+  "ASU_E": {
+  "options": [
+    {
+      "th": "สอบถามเรื่องเรียน การลงทะเบียน กิจกรรม ขอเอกสารจากคณะ",
+      "en": "Inquiries about study, registration, activities, or requesting faculty documents"
+    },
+    {
+      "th": "ประสานงานเพื่อขอใช้ห้องต่างๆ",
+      "en": "Coordination for room usage/bookings"
+    },
+    {
+      "th": "ประสานงานกับหน่วยงานต่างๆ เช่น SDX จัดซื้อ จัดเลี้ยง อื่นๆ",
+      "en": "Coordination with other departments (e.g., SDX, Purchasing, Catering, etc.)"
+    },
+    {
+      "th": "ทำความร่วมมือกับคณะ เช่น งานวิจัย กิจกรรม โครงการต่างๆ",
+      "en": "Collaboration with the faculty (e.g., research, activities, projects, etc.)"
+    },
+    {
+      "th": "เรื่องร้องเรียน",
+      "en": "Giving comments or complaints"
+    },
+    {
+      "th": "อื่นๆ",
+      "en": "Others."
+    }
+  ]
+  },
+
   "OSS": [
     "ผ่อนผันทหาร",
     "Lost & Found (ของหาย)",
@@ -47,13 +76,6 @@
     "เรื่องร้องเรียน",
     "อื่นๆ"
   ],
-  "ASU_E": [
-    "สอบถามเรื่องเรียน การลงทะเบียน กิจกรรม ขอเอกสารจากคณะ - Inquiries about study, registration, activity, or requesting documents from the faculty",
-    "ประสานงานเพื่อขอใช้ห้องต่างๆ - Coordination for room usage",
-    "ประสานงานกับหน่วยงานต่างๆ เช่น SDX จัดซื้อ จัดเลี้ยง อื่นๆ - Coordination with other departments (e.g., SDX, Purchasing, Catering, etc.)",
-    "ทำความร่วมมือกับคณะ เช่น งานวิจัย กิจกรรม โครงการต่างๆ - Collaboration with the faculty (e.g., research, activities, projects, etc.)",
-    "เรื่องร้องเรียน - Giving comments or complaints"
-  ],  
   "ASU_language_institute": [
     "การอธิบายการใช้โปรแกรม Speexx",
     "การอธิบายการสอบวัดระดับ"
@@ -92,3 +114,4 @@
     "เรื่องอื่นๆ หรือประสานงานทั่วไป"
   ]
 }
+
