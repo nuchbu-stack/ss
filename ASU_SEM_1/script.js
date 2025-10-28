@@ -86,7 +86,7 @@ const I18N = {
     q2_opt_delay: "Time taken to provide the service",
     q2_opt_accuracy: "Correctness of information provided",
     q2_opt_facility: "Adequacy and readiness of equipment and venue (Facility)",
-    q2_opt_other: "Others",
+    q2_opt_other: "Other(s)",
     q2_other_placeholder: "Please specify",
     q2_error: "Please select or specify what made you dissatisfied",
 
@@ -100,6 +100,17 @@ const I18N = {
   }
 };
 let CURRENT_LANG = localStorage.getItem("lang") || "th";
+
+
+function isOther(val) {
+  if (!val) return false;
+  const s = val.toString().trim().toLowerCase();
+  // ไทย: อื่น, อื่นๆ, อื่น ๆ, อื่นๆ (โปรดระบุ) ฯลฯ
+  if (/^อื่น(\s*ๆ)?/.test(s)) return true;
+  // EN: other, others, other., others., other (please specify) ฯลฯ
+  if (s.startsWith('Other')) return true; // ครอบคลุม others/other./other (...)
+  return false;
+}
 
 /********************
  * Auto return timers
@@ -227,7 +238,7 @@ document.querySelectorAll('input[name="qUser"]').forEach(radio => {
 q0.addEventListener("change", () => {
   document.getElementById("q0Error")?.classList.add("hidden");
   const v = q0.value;
-  if (v === "อื่นๆ" || v === "Other" || v === "อื่นๆ (โปรดระบุ)" || v === "Other (please specify)") {
+  if (isOther(q0.value)) {
     q0Other.classList.remove("hidden");
   } else {
     q0Other.classList.add("hidden");
@@ -266,7 +277,7 @@ q1Options.forEach(opt => {
 document.querySelectorAll('input[name="q2"]').forEach(radio => {
   radio.addEventListener("change", () => {
     document.getElementById("q2Error")?.classList.add("hidden");
-    if (radio.value === "อื่นๆ" || radio.value?.toLowerCase() === "other") {
+    if (isOther(radio.value)) {
       q2Other.classList.remove("hidden");
     } else {
       q2Other.classList.add("hidden");
@@ -307,8 +318,7 @@ form.addEventListener("submit", async (e) => {
   // Q0
   let finalQ0 = "--";
   if (!q0Section.classList.contains("hidden")) {
-    finalQ0 = (q0.value === "อื่นๆ" || q0.value === "Other" ||
-               q0.value === "อื่นๆ (โปรดระบุ)" || q0.value === "Other (please specify)")
+    finalQ0 = isOther(q0.value)
               ? q0Other.value.trim()
               : q0.value;
 
@@ -341,11 +351,11 @@ form.addEventListener("submit", async (e) => {
       document.getElementById("q2Error")?.classList.remove("hidden");
       valid = false;
     } else {
-      finalQ2 = (q2Checked.value === "อื่นๆ" || q2Checked.value?.toLowerCase() === "other")
+      finalQ2 = isOther(q2Checked.value)
         ? q2Other.value.trim()
         : q2Checked.value;
 
-      if ((q2Checked.value === "อื่นๆ" || q2Checked.value?.toLowerCase() === "other") && !finalQ2) {
+      if (isOther(q2Checked.value) && !finalQ2) {
         setErrorText("q2Error","q2_error");
         document.getElementById("q2Error")?.classList.remove("hidden");
         valid = false;
