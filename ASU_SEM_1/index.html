@@ -83,18 +83,40 @@
       <!-- Q2 -->
       <div class="question hidden" id="q2Section">
         <label class="label" id="q2Label">ท่านไม่พึงพอใจในเรื่องใด</label>
+
         <div id="q2Options" class="radio-group">
-          <label><input type="radio" name="q2" value="การให้บริการของเจ้าหน้าที่"> มรรยาทและความเต็มใจในการให้บริการ - manner and willingness of the staff</label>
-          <label><input type="radio" name="q2" value="ความล่าช้า"> ระยะเวลาที่ใช้ในการให้บริการ - time taken to provide the service</label>
-          <label><input type="radio" name="q2" value="ความผิดพลาด"> ความสามารถในการให้ข้อมูลอย่างถูกต้อง - correctness of information provided</label>
-          <label><input type="radio" name="q2" value="Facility"> ความพร้อมของอุปกรณ์และสถานที่ (Facility) - adequacy and readiness of equipment and venue</label>
+          <label>
+            <input type="radio" name="q2" value="การให้บริการของเจ้าหน้าที่">
+            <span id="q2_opt_staff_text">มรรยาทและความเต็มใจในการให้บริการ</span>
+          </label>
+
+          <label>
+            <input type="radio" name="q2" value="ความล่าช้า">
+            <span id="q2_opt_delay_text">ระยะเวลาที่ใช้ในการให้บริการ</span>
+          </label>
+
+          <label>
+            <input type="radio" name="q2" value="ความผิดพลาด">
+            <span id="q2_opt_accuracy_text">ความสามารถในการให้ข้อมูลอย่างถูกต้อง</span>
+          </label>
+
+          <label>
+            <input type="radio" name="q2" value="Facility">
+            <span id="q2_opt_facility_text">ความพร้อมของอุปกรณ์และสถานที่ (Facility)</span>
+          </label>
+
           <label class="inline-other">
-            <input type="radio" name="q2" value="อื่นๆ" id="q2OtherRadio"> อื่นๆ - Others
+            <input type="radio" name="q2" value="อื่นๆ" id="q2OtherRadio">
+            <span id="q2_opt_other_text">อื่นๆ</span>
             <input type="text" id="q2Other" name="q2Other" class="hidden" placeholder="โปรดระบุ / Please specify">
           </label>
         </div>
-        <div id="q2Error" class="error hidden">กรุณาเลือกหรือระบุเรื่องที่ไม่พึงพอใจ - Please select or specify what made you dissatisfied.</div>
+
+        <div id="q2Error" class="error hidden">
+          กรุณาเลือกหรือระบุเรื่องที่ไม่พึงพอใจ - Please select or specify what made you dissatisfied.
+        </div>
       </div>
+
 
       <!-- Q3 -->
       <div class="question">

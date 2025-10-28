@@ -40,6 +40,14 @@ const I18N = {
     q1_2: "น้อย",
     q1_1: "น้อยที่สุด",
     q2_label: "ท่านไม่พึงพอใจในเรื่องใด",
+    q2_label: "ท่านไม่พึงพอใจในเรื่องใด",
+    q2_opt_staff: "มรรยาทและความเต็มใจในการให้บริการ",
+    q2_opt_delay: "ระยะเวลาที่ใช้ในการให้บริการ",
+    q2_opt_accuracy: "ความสามารถในการให้ข้อมูลอย่างถูกต้อง",
+    q2_opt_facility: "ความพร้อมของอุปกรณ์และสถานที่ (Facility)",
+    q2_opt_other: "อื่นๆ",
+    q2_other_placeholder: "โปรดระบุ",
+    q2_error: "กรุณาเลือกหรือระบุเรื่องที่ไม่พึงพอใจ",
     q3_label: "ข้อเสนอแนะ/ข้อร้องเรียน",
     q3_placeholder: "พิมพ์ข้อความเพิ่มเติม",
     submit: "ส่งแบบประเมิน",
@@ -65,6 +73,14 @@ const I18N = {
     q1_2: "Somewhat dissatisfied",
     q1_1: "Very dissatisfied",
     q2_label: "What made you dissatisfied.",
+    q2_label: "Which aspect were you dissatisfied with?",
+    q2_opt_staff: "Manner and willingness of the staff",
+    q2_opt_delay: "Time taken to provide the service",
+    q2_opt_accuracy: "Correctness of information provided",
+    q2_opt_facility: "Adequacy and readiness of equipment and venue (Facility)",
+    q2_opt_other: "Others",
+    q2_other_placeholder: "Please specify",
+    q2_error: "Please select or specify what made you dissatisfied",
     q3_label: "Suggestions / Complaints",
     q3_placeholder: "Type your message here",
     submit: "Submit",
@@ -464,6 +480,34 @@ function applyLang(lang) {
     const first = q0.querySelector("option[disabled]");
     if (first) first.textContent = t.q0_placeholder;
   }
+
+  // --- Q2 texts ---
+  document.getElementById("q2Label")
+    ?.replaceChildren(document.createTextNode(I18N[lang].q2_label));
+
+  const mapQ2 = [
+    ["q2_opt_staff_text",   I18N[lang].q2_opt_staff],
+    ["q2_opt_delay_text",   I18N[lang].q2_opt_delay],
+    ["q2_opt_accuracy_text",I18N[lang].q2_opt_accuracy],
+    ["q2_opt_facility_text",I18N[lang].q2_opt_facility],
+    ["q2_opt_other_text",   I18N[lang].q2_opt_other],
+  ];
+  mapQ2.forEach(([id, txt]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = txt;
+  });
+
+  // placeholder ของช่อง "อื่นๆ"
+  const q2Other = document.getElementById("q2Other");
+  if (q2Other) q2Other.placeholder = 
+    (lang === "th")
+      ? `${I18N.th.q2_other_placeholder} / ${I18N.en.q2_other_placeholder}`
+      : I18N.en.q2_other_placeholder;
+
+  // ข้อความ error Q2
+  const q2Err = document.getElementById("q2Error");
+  if (q2Err) q2Err.textContent = I18N[lang].q2_error;
+
 
   // Q3 placeholder
   const q3 = document.getElementById("q3");
