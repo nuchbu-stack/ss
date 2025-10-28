@@ -108,16 +108,10 @@ const I18N = {
   }
 };
 
-// เรียกทุกครั้งที่สลับภาษา
-function renderHeader(lang = "th") {
-  const t = I18N_HEADER[lang] || I18N_HEADER.th;
-  document.getElementById("title-main").textContent = t.titleMain;
-  document.getElementById("title-sub").textContent = t.titleSub;
-}
+
 
 let CURRENT_LANG = localStorage.getItem("lang") || "th";
 
-renderHeader(currentLang);
 
 
 function isOther(val) {
