@@ -508,6 +508,9 @@ function applyLang(lang) {
   document.getElementById("q3Label")?.replaceChildren(document.createTextNode(t.q3_label));
   const q3 = document.getElementById("q3"); if (q3) q3.placeholder = t.q3_placeholder;
 
+  const submitBtn = document.getElementById("submitBtn");
+  if (submitBtn) submitBtn.textContent = t.submit;   // <<< บรรทัดนี้สำคัญ
+    
   // ปุ่มภาษา active
   document.querySelectorAll(".lang-btn").forEach(b =>
     b.classList.toggle("active", b.dataset.lang === lang)
