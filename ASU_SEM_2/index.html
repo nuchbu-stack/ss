@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="แบบประเมินความพึงพอใจ - ช่วยเราปรับปรุงการบริการของเราโดยการตอบแบบสอบถามนี้" />
+  <title>Satisfaction Survey</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="container">
+    <!-- Language switch -->
+    <div class="lang-switch" aria-label="Language switch">
+      <button type="button" class="lang-btn" data-lang="th">ไทย</button>
+      <button type="button" class="lang-btn" data-lang="en">EN</button>
+    </div>
+
+    <!-- Header (ข้อความจะถูกสลับโดย script.js ผ่าน I18N) -->
+    <header class="form-header">
+      <h1 id="title-main">แบบประเมินความพึงพอใจ</h1>
+      <h2 id="title-sub">คณะการสร้างเจ้าของธุรกิจและการบริหารกิจการ (SEM)</h2>
+    </header>
+   
+    <!-- ฟอร์ม -->
+    <form id="surveyForm">
+
+    <!-- QUser (ผู้รับบริการ) -->
+    <div class="question" id="qUserSection">
+      <label class="label" id="qUserLabel">ผู้รับบริการคือ</label>
+
+      <div id="qUserOptions" class="radio-group">
+        <label class="choice-card" for="qUser_student">
+          <input type="radio" id="qUser_student" name="qUser" value="นักศึกษา" />
+          <span id="qUser_student_text">นักศึกษา</span>
+        </label>
+
+        <label class="choice-card" for="qUser_staff">
+          <input type="radio" id="qUser_staff" name="qUser" value="บุคลากรของมหาวิทยาลัย" />
+          <span id="qUser_staff_text">บุคลากรของมหาวิทยาลัย</span>
+        </label>
+
+        <label class="choice-card" for="qUser_parent">
+          <input type="radio" id="qUser_parent" name="qUser" value="ผู้ปกครอง / ศิษย์เก่า" />
+          <span id="qUser_parent_text">ผู้ปกครอง / ศิษย์เก่า</span>
+        </label>
+
+        <label class="choice-card" for="qUser_external">
+          <input type="radio" id="qUser_external" name="qUser" value="หน่วยงานภายนอก" />
+          <span id="qUser_external_text">หน่วยงานภายนอก</span>
+        </label>
+      </div>
+
+      <div id="qUserError" class="error hidden">กรุณาเลือกผู้รับบริการ</div>
+
+    </div>
+
+
+      <!-- Q0 -->
+      <div class="question" id="q0Section">
+        <label class="label" id="q0Label" for="q0">เรื่องที่รับบริการ</label>
+        <select id="q0" name="q0">
+          <option value="" disabled selected>— เลือก / Select —</option>
+        </select>
+        <input type="text" id="q0Other" class="hidden" placeholder="โปรดระบุเรื่องที่รับบริการ" />
+        <div id="q0Error" class="error hidden">กรุณาเลือกเรื่องที่รับบริการ</div>
+      </div>
+      
+      <!-- Q1 -->
+      <div class="question">
+        <label class="label" id="q1Label">ระดับความพึงพอใจของท่าน</label>
+        <div class="options" id="q1Options">
+          <div class="option option-5" data-value="5" role="button" tabindex="0">😁<br><span>Most satisfied</span></div>
+          <div class="option option-4" data-value="4" role="button" tabindex="0">😊<br><span>Very satisfied</span></div>
+          <div class="option option-3" data-value="3" role="button" tabindex="0">😐<br><span>Neutral</span></div>
+          <div class="option option-2" data-value="2" role="button" tabindex="0">😕<br><span>Somewhat dissatisfied</span></div>
+          <div class="option option-1" data-value="1" role="button" tabindex="0">😡<br><span>Very dissatisfied</span></div>
+        </div>
+        <div id="q1Error" class="error hidden">กรุณาเลือกระดับความพึงพอใจ - Please select satisfaction level.</div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="question hidden" id="q2Section">
+        <label class="label" id="q2Label">ท่านไม่พึงพอใจในเรื่องใด</label>
+
+        <div id="q2Options" class="radio-group">
+          <label>
+            <input type="radio" name="q2" value="การให้บริการของเจ้าหน้าที่">
+            <span id="q2_opt_staff_text">มรรยาทและความเต็มใจในการให้บริการ</span>
+          </label>
+
+          <label>
+            <input type="radio" name="q2" value="ความล่าช้า">
+            <span id="q2_opt_delay_text">ระยะเวลาที่ใช้ในการให้บริการ</span>
+          </label>
+
+          <label>
+            <input type="radio" name="q2" value="ความผิดพลาด">
+            <span id="q2_opt_accuracy_text">ความสามารถในการให้ข้อมูลอย่างถูกต้อง</span>
+          </label>
+
+          <label>
+            <input type="radio" name="q2" value="Facility">
+            <span id="q2_opt_facility_text">ความพร้อมของอุปกรณ์และสถานที่ (Facility)</span>
+          </label>
+
+          <label class="inline-other">
+            <input type="radio" name="q2" value="อื่นๆ" id="q2OtherRadio">
+            <span id="q2_opt_other_text">อื่นๆ</span>
+            <input type="text" id="q2Other" name="q2Other" class="hidden" placeholder="โปรดระบุ">
+          </label>
+        </div>
+
+        <div id="q2Error" class="error hidden">
+          กรุณาเลือกหรือระบุเรื่องที่ไม่พึงพอใจ - Please select or specify what made you dissatisfied.
+        </div>
+      </div>
+
+
+      <!-- Q3 -->
+      <div class="question">
+        <label for="q3" class="label" id="q3Label">ข้อเสนอแนะ/ข้อร้องเรียน</label>
+        <textarea name="q3" id="q3" rows="3" placeholder="พิมพ์ข้อความเพิ่มเติม / Type your message here"></textarea>
+      </div>
+
+      <button type="submit" id="submitBtn">ส่งแบบประเมิน</button>
+    </form>
+
+    <!-- Thank you page -->
+    <div id="thankYou" class="hidden">
+      <h2 id="thankTitle">รับข้อมูลเรียบร้อยแล้ว ขอบคุณค่ะ 🙏</h2>
+      <p id="thankDesc">คุณสามารถเลือกทำแบบสอบถามใหม่หรือปิดหน้านี้ได้</p>
+
+      <p id="autoReturnNote">
+        กลับไปหน้าฟอร์มอัตโนมัติใน <span id="countdown">10</span> วินาที
+      </p>
+
+      <button id="againBtn" type="button">ทำแบบสอบถามอีกครั้ง</button>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

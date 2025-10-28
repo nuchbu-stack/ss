@@ -17,7 +17,7 @@ const submitButton = form.querySelector('button[type="submit"]');
  ********************/
 const GAS_URL = "https://script.google.com/macros/s/AKfycbyGhPwMCqvXhU0TMue4AfU0TOo2Nms7Iy9kFCfun-wqYFrb7ntTB5uBUPDDXGpYoIPa/exec";
 const DEPARTMENT = "ASU_E";          // ใช้โหลด services
-const DEPARTMENT_LABEL = "การสร้างเจ้าของธุรกิจฯ_1";             // ชื่อที่จะเก็บลงชีท
+const DEPARTMENT_LABEL = "การสร้างเจ้าของธุรกิจฯ_2";             // ชื่อที่จะเก็บลงชีท
 const JSON_URL = "https://nuchbu-stack.github.io/ss/q0Options.json";
 
 /********************
