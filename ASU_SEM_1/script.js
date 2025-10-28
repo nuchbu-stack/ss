@@ -35,6 +35,7 @@ const I18N = {
     q0_label: "เรื่องที่รับบริการ",
     q0_placeholder: "-- กรุณาเลือก --",
     q0_error: "กรุณาเลือกเรื่องที่รับบริการ",
+    q0_other_placeholder: "โปรดระบุเรื่องที่รับบริการ",   // <-- เพิ่มบรรทัดนี้
 
     q1_label: "ระดับความพึงพอใจของท่าน",
     q1_5: "มากที่สุด",
@@ -72,6 +73,7 @@ const I18N = {
     q0_label: "Service Category",
     q0_placeholder: "-- Please select --",
     q0_error: "Please select the service topic.",
+    q0_other_placeholder: "Please specify the service topic", // <-- เพิ่มบรรทัดนี้
 
     q1_label: "Your satisfaction/dissatisfaction level.",
     q1_5: "Most satisfied",
@@ -437,6 +439,18 @@ function applyLang(lang) {
   document.getElementById("q0Label")?.replaceChildren(document.createTextNode(t.q0_label));
   const first = q0?.querySelector("option[disabled]");
   if (first) first.textContent = t.q0_placeholder;
+
+  // Q0 placeholder (select)
+  if (q0) {
+    const first = q0.querySelector("option[disabled]");
+    if (first) first.textContent = t.q0_placeholder;
+  }
+
+  // Q0 other placeholder (input)
+  if (q0Other) {
+    q0Other.placeholder = t.q0_other_placeholder;   // <-- ตั้งตามภาษาเดียว
+  }
+    
 
   // Q1 captions (ต้องมี .option-X span)
   [
