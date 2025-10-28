@@ -461,6 +461,9 @@ function applyLang(lang) {
     }
   });
 
+  // QUser error message
+  const qUserErr = document.getElementById("qUserError");
+  if (qUserErr) qUserErr.textContent = I18N[lang].qUser_error;  
 
   // Q1 captions
   const captions = [
