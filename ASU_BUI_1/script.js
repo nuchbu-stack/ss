@@ -111,7 +111,12 @@ const I18N = {
 };
 
 
-let CURRENT_LANG = localStorage.getItem("lang") || "th";
+let CURRENT_LANG = localStorage.getItem("lang") || "en";
+
+const urlLang = new URLSearchParams(location.search).get("lang");
+if (urlLang === "th" || urlLang === "en") {
+  CURRENT_LANG = urlLang;   // เช่น ?lang=en หรือ ?lang=th
+}
 
 function renderHeader(lang = "th") {
   const t = I18N_HEADER[lang] || I18N_HEADER.th;
@@ -594,7 +599,9 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".lang-btn").forEach(btn => {
     btn.addEventListener("click", () => applyLang(btn.dataset.lang));
   });
-  applyLang(CURRENT_LANG);
+  applyLang(CURRENT_LANG);                 // ให้หน้าเริ่มที่ EN
+  document.documentElement.lang = CURRENT_LANG;  // <html lang="en|th">
+
 
   // ✅ Event delegation ให้ปุ่ม "ทำแบบสอบถามอีกครั้ง" (againBtn)
   // ทำงานได้แม้ DOM ถูก re-render จากการสลับภาษา
