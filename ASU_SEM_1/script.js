@@ -103,7 +103,7 @@ const I18N = {
     q3_placeholder: "Type your message here",
 
     submit: "Submit",
-    thank_title: "Your response has been successfully recorded. Thank you 🙏",
+    thank_title: "Your response has been successfully recorded. <br>Thank you 🙏",
     thank_desc: "You may choose to complete another survey or close this page.",
     thank_autoreturn: "Returning to the form automatically in",
     thank_again: "Submit another response",
