@@ -12,20 +12,19 @@ const q2Other = document.getElementById("q2Other");
 const thankYou = document.getElementById("thankYou");
 const submitButton = form.querySelector('button[type="submit"]');
 
-// ===== GAS & Config =====
+/********************
+ * Config
+ ********************/
 const GAS_URL = "https://script.google.com/macros/s/AKfycbyGhPwMCqvXhU0TMue4AfU0TOo2Nms7Iy9kFCfun-wqYFrb7ntTB5uBUPDDXGpYoIPa/exec";
-const DEPARTMENT = "ASU_E";                  // ใช้สำหรับโหลด services
-const DEPARTMENT_LABEL = "การสร้างเจ้าของธุรกิจฯ"; // เก็บลงชีท
+const DEPARTMENT = "ASU_language_institute";          // ใช้โหลด services
+const DEPARTMENT_LABEL = "สถาบันภาษา_2";             // ชื่อที่จะเก็บลงชีท
 const JSON_URL = "https://nuchbu-stack.github.io/ss/q0Options.json";
 
 /********************
- * i18n dictionary
+ * i18n
  ********************/
 const I18N = {
   th: {
-    titleMain: "แบบประเมินความพึงพอใจ",
-    titleSub: "คณะการสร้างเจ้าของธุรกิจและการบริหารกิจการ (SEM)",
-
     qUser_label: "ผู้รับบริการคือ",
     qUser_student: "นักศึกษา",
     qUser_staff: "บุคลากรของมหาวิทยาลัย",
@@ -60,12 +59,9 @@ const I18N = {
     submit: "ส่งแบบประเมิน",
     thank_title: "ขอบคุณสำหรับการประเมิน 🙏",
     thank_desc: "เราจะนำข้อเสนอแนะไปปรับปรุงบริการให้ดียิ่งขึ้น",
-    again: "ทำแบบสอบถามอีกครั้ง"
+    again: "ทำแบบสอบถามอีกครั้ง",
   },
   en: {
-    titleMain: "Satisfaction Evaluation Form",
-    titleSub: "School of Entrepreneurship and Management",
-
     qUser_label: "Service Recipient: You are...",
     qUser_student: "Student",
     qUser_staff: "BU Personnel",
@@ -100,10 +96,9 @@ const I18N = {
     submit: "Submit",
     thank_title: "Thanks for your feedback 🙏",
     thank_desc: "We’ll use it to improve our services.",
-    again: "Submit another response"
+    again: "Submit another response",
   }
 };
-
 let CURRENT_LANG = localStorage.getItem("lang") || "th";
 
 /********************
@@ -127,20 +122,12 @@ function backToForm() {
     countdownEl.classList.remove("animate");
   }
 
-  const qUserErr = document.getElementById("qUserError");
   document.querySelectorAll("input[name='qUser']").forEach(r => r.checked = false);
-  if (qUserErr) qUserErr.classList.add("hidden");
-
-  const q0Err = document.getElementById("q0Error");
-  const q1Err = document.getElementById("q1Error");
-  const q2Err = document.getElementById("q2Error");
-  if (q0Err) q0Err.classList.add("hidden");
-  if (q1Err) q1Err.classList.add("hidden");
-  if (q2Err) q2Err.classList.add("hidden");
+  ["qUserError","q0Error","q1Error","q2Error"].forEach(id=>{
+    document.getElementById(id)?.classList.add("hidden");
+  });
 
   q1Options.forEach(o => o.classList.remove("active"));
-  let q1Value = ""; // local reset if needed
-  let q2Value = "";
   q2Section.classList.add("hidden");
   q2Other.classList.add("hidden");
 
@@ -155,7 +142,7 @@ function bumpCountdown() {
 }
 
 /********************
- * Error text helpers (update while visible)
+ * Helpers: error texts (เปลี่ยนสดตอนสลับภาษา)
  ********************/
 function setErrorText(elId, i18nKey) {
   const el = document.getElementById(elId);
@@ -163,16 +150,16 @@ function setErrorText(elId, i18nKey) {
   const t = I18N[CURRENT_LANG]?.[i18nKey];
   if (t) el.textContent = t;
 }
-
 function updateErrorTexts() {
-  setErrorText("qUserError", "qUser_error");
-  setErrorText("q0Error", "q0_error");
-  setErrorText("q1Error", "q1_error");
-  setErrorText("q2Error", "q2_error");
+  setErrorText("qUserError","qUser_error");
+  setErrorText("q0Error","q0_error");
+  setErrorText("q1Error","q1_error");
+  setErrorText("q2Error","q2_error");
 }
 
 /********************
  * Load Services (Q0)
+ * รองรับ options เป็น string หรือ object {th,en}
  ********************/
 async function loadServices() {
   try {
@@ -182,35 +169,24 @@ async function loadServices() {
     const res = await fetch(JSON_URL + "?v=" + Date.now());
     const data = await res.json();
 
-    // QUser on/off by Features.UserType
-    const hasUserType = data.Features
-      && Array.isArray(data.Features.UserType)
-      && data.Features.UserType.includes(DEPARTMENT);
+    // toggle QUser by Features.UserType
+    const hasUserType = data?.Features?.UserType?.includes(DEPARTMENT);
+    qUserSection?.classList.toggle("hidden", !hasUserType);
+    if (!hasUserType) document.getElementById("qUserError")?.classList.add("hidden");
 
-    if (hasUserType) {
-      qUserSection?.classList.remove("hidden");
-      document.getElementById("qUserError")?.classList.add("hidden");
-    } else {
-      qUserSection?.classList.add("hidden");
-    }
-
-    // Department config
     let conf = data[DEPARTMENT];
-    if (Array.isArray(conf)) {
-      conf = { hasServices: true, options: conf };
-    }
+    if (Array.isArray(conf)) conf = { hasServices: true, options: conf };
 
     if (!conf || conf.hasServices === false) {
       q0Section?.classList.add("hidden");
-      q0.required = false;
-      q0.disabled = false;
+      q0.disabled = true;
       q0.value = "--";
       q0Other.value = "";
       q0Other.classList.add("hidden");
       return;
     }
 
-    // fill options by current lang
+    // fill options
     q0.innerHTML = `<option value="" disabled selected>${I18N[CURRENT_LANG].q0_placeholder}</option>`;
     conf.options.forEach(item => {
       const text = (typeof item === "string")
@@ -218,15 +194,13 @@ async function loadServices() {
         : (item[CURRENT_LANG] || item.th || item.en || "");
       if (!text) return;
       const opt = document.createElement("option");
-      opt.value = text;
+      opt.value = text;      // เก็บตามที่เห็น
       opt.textContent = text;
       q0.appendChild(opt);
     });
 
     q0.disabled = false;
     q0Section?.classList.remove("hidden");
-    q0.required = true;
-
   } catch (err) {
     console.error("โหลด services.json ไม่ได้", err);
     q0Section?.classList.add("hidden");
@@ -236,8 +210,6 @@ async function loadServices() {
     q0Other.classList.add("hidden");
   }
 }
-
-// initial load
 loadServices();
 
 /********************
@@ -250,18 +222,18 @@ document.querySelectorAll('input[name="qUser"]').forEach(radio => {
 });
 
 /********************
- * Q0 show/hide "อื่นๆ"
+ * Q0 other toggle
  ********************/
 q0.addEventListener("change", () => {
   document.getElementById("q0Error")?.classList.add("hidden");
-  if (q0.value === "อื่นๆ" || q0.value === "Other" || q0.value === "อื่นๆ (โปรดระบุ)" || q0.value === "Other (please specify)") {
+  const v = q0.value;
+  if (v === "อื่นๆ" || v === "Other" || v === "อื่นๆ (โปรดระบุ)" || v === "Other (please specify)") {
     q0Other.classList.remove("hidden");
   } else {
     q0Other.classList.add("hidden");
     q0Other.value = "";
   }
 });
-
 q0Other.addEventListener("input", () => {
   if (q0Other.value.trim() !== "") {
     document.getElementById("q0Error")?.classList.add("hidden");
@@ -272,8 +244,6 @@ q0Other.addEventListener("input", () => {
  * Q1 / Q2
  ********************/
 let q1Value = "";
-let q2Value = "";
-
 q1Options.forEach(opt => {
   opt.addEventListener("click", () => {
     q1Options.forEach(o => o.classList.remove("active"));
@@ -293,7 +263,6 @@ q1Options.forEach(opt => {
     }
   });
 });
-
 document.querySelectorAll('input[name="q2"]').forEach(radio => {
   radio.addEventListener("change", () => {
     document.getElementById("q2Error")?.classList.add("hidden");
@@ -305,7 +274,6 @@ document.querySelectorAll('input[name="q2"]').forEach(radio => {
     }
   });
 });
-
 q2Other.addEventListener("input", () => {
   if (q2Other.value.trim() !== "") {
     document.getElementById("q2Error")?.classList.add("hidden");
@@ -319,43 +287,24 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
   let valid = true;
 
-  // ==== QUser (ผู้รับบริการ)
+  // QUser
   let finalQUser = "--";
-  const qUserErrEl = document.getElementById("qUserError");
-
-  function showQUserError() {
-    setErrorText("qUserError", "qUser_error"); // <- ดึงจาก I18N เสมอ
-    if (!qUserErrEl) return;
-    qUserErrEl.classList.remove("hidden");
-    qUserErrEl.style.display = "block";
-    qUserErrEl.setAttribute("aria-live", "assertive");
-  }
-
-  function hideQUserError() {
-    if (!qUserErrEl) return;
-    qUserErrEl.classList.add("hidden");
-    qUserErrEl.style.display = "";
-  }
-
-  const isQUserVisible = (() => {
-    const el = document.getElementById("qUserSection");
-    return !!(el && el.offsetParent !== null);
-  })();
-
+  const isQUserVisible = !!(qUserSection && qUserSection.offsetParent !== null);
   if (isQUserVisible) {
     const qUserChecked = document.querySelector("input[name='qUser']:checked");
     if (!qUserChecked) {
-      showQUserError();
+      setErrorText("qUserError","qUser_error");
+      document.getElementById("qUserError")?.classList.remove("hidden");
       valid = false;
     } else {
       finalQUser = qUserChecked.value;
-      hideQUserError();
+      document.getElementById("qUserError")?.classList.add("hidden");
     }
   } else {
-    hideQUserError();
+    document.getElementById("qUserError")?.classList.add("hidden");
   }
 
-  // ==== Q0
+  // Q0
   let finalQ0 = "--";
   if (!q0Section.classList.contains("hidden")) {
     finalQ0 = (q0.value === "อื่นๆ" || q0.value === "Other" ||
@@ -364,7 +313,7 @@ form.addEventListener("submit", async (e) => {
               : q0.value;
 
     if (!finalQ0) {
-      setErrorText("q0Error", "q0_error"); // <- อัปเดตตามภาษา
+      setErrorText("q0Error","q0_error");
       document.getElementById("q0Error")?.classList.remove("hidden");
       valid = false;
     } else {
@@ -374,21 +323,21 @@ form.addEventListener("submit", async (e) => {
     document.getElementById("q0Error")?.classList.add("hidden");
   }
 
-  // ==== Q1
+  // Q1
   if (!q1Value) {
-    setErrorText("q1Error", "q1_error"); // <- อัปเดตตามภาษา
+    setErrorText("q1Error","q1_error");
     document.getElementById("q1Error")?.classList.remove("hidden");
     valid = false;
   } else {
     document.getElementById("q1Error")?.classList.add("hidden");
   }
 
-  // ==== Q2
+  // Q2
   let finalQ2 = "";
   if (q1Value === "1" || q1Value === "2") {
     const q2Checked = document.querySelector("input[name='q2']:checked");
     if (!q2Checked) {
-      setErrorText("q2Error", "q2_error"); // <- อัปเดตตามภาษา
+      setErrorText("q2Error","q2_error");
       document.getElementById("q2Error")?.classList.remove("hidden");
       valid = false;
     } else {
@@ -397,7 +346,7 @@ form.addEventListener("submit", async (e) => {
         : q2Checked.value;
 
       if ((q2Checked.value === "อื่นๆ" || q2Checked.value?.toLowerCase() === "other") && !finalQ2) {
-        setErrorText("q2Error", "q2_error");
+        setErrorText("q2Error","q2_error");
         document.getElementById("q2Error")?.classList.remove("hidden");
         valid = false;
       } else {
@@ -408,6 +357,7 @@ form.addEventListener("submit", async (e) => {
 
   if (!valid) return;
 
+  // ส่งข้อมูล (background) + ไปหน้า Thank You ทันที
   const payload = new URLSearchParams({
     department: DEPARTMENT_LABEL,
     qUser: finalQUser,
@@ -417,11 +367,10 @@ form.addEventListener("submit", async (e) => {
     q3: document.getElementById("q3").value.trim()
   });
 
-  // Thank You ทันที
   form.classList.add("hidden");
   thankYou.classList.remove("hidden");
 
-  // Auto return
+  // auto return
   let remain = 10;
   if (countdownEl) {
     countdownEl.textContent = remain;
@@ -432,41 +381,26 @@ form.addEventListener("submit", async (e) => {
   if (countdownTimer) clearInterval(countdownTimer);
   countdownTimer = setInterval(() => {
     remain -= 1;
-    if (countdownEl) {
-      countdownEl.textContent = remain;
-      bumpCountdown();
-    }
-    if (remain <= 0) {
-      clearInterval(countdownTimer);
-      countdownTimer = null;
-    }
+    if (countdownEl) { countdownEl.textContent = remain; bumpCountdown(); }
+    if (remain <= 0) { clearInterval(countdownTimer); countdownTimer = null; }
   }, 1000);
   if (autoBackTimer) clearTimeout(autoBackTimer);
-  autoBackTimer = setTimeout(() => backToForm(), 10000);
+  autoBackTimer = setTimeout(() => { backToForm(); }, 10000);
 
-  // Reset UI
+  // reset UI
   form.reset();
   q0Other.classList.add("hidden");
   q1Options.forEach(o => o.classList.remove("active"));
   q1Value = "";
-  q2Value = "";
   q2Section.classList.add("hidden");
   q2Other.classList.add("hidden");
   document.querySelectorAll('input[name="qUser"]').forEach(r => (r.checked = false));
   document.getElementById("qUserError")?.classList.add("hidden");
 
-  // Background send
   fetch(GAS_URL + "?cachebust=" + Date.now(), {
     method: "POST",
     body: new URLSearchParams(payload)
-  }).catch(err => {
-    console.error("ส่งข้อมูลไม่สำเร็จ (background)", err);
-  });
-});
-
-// ทำอีกครั้ง
-document.getElementById("againBtn").addEventListener("click", () => {
-  backToForm();
+  }).catch(err => console.error("ส่งข้อมูลไม่สำเร็จ (background)", err));
 });
 
 /********************
@@ -477,60 +411,48 @@ function applyLang(lang) {
   localStorage.setItem("lang", lang);
   const t = I18N[lang];
 
-  // Header
-  document.getElementById("title-main")?.replaceChildren(document.createTextNode(t.titleMain));
-  document.getElementById("title-sub")?.replaceChildren(document.createTextNode(t.titleSub));
-
-  // Labels
-  document.getElementById("q0Label")?.replaceChildren(document.createTextNode(t.q0_label));
-  document.getElementById("q1Label")?.replaceChildren(document.createTextNode(t.q1_label));
-  document.getElementById("q2Label")?.replaceChildren(document.createTextNode(t.q2_label));
-  document.getElementById("q3Label")?.replaceChildren(document.createTextNode(t.q3_label));
-
-  // QUser label & options
-  document.getElementById("qUserLabel")?.replaceChildren(document.createTextNode(I18N[lang].qUser_label));
+  // QUser label & options (ต้องมี id ตามนี้ใน HTML)
+  document.getElementById("qUserLabel")?.replaceChildren(document.createTextNode(t.qUser_label));
   [
-    ["qUser_student_text",  "qUser_student"],
-    ["qUser_staff_text",    "qUser_staff"],
-    ["qUser_parent_text",   "qUser_parent"],
-    ["qUser_external_text", "qUser_external"],
-  ].forEach(([spanId, key]) => {
-    const el = document.getElementById(spanId);
-    if (el) el.textContent = I18N[lang][key];
+    ["qUser_student_text","qUser_student"],
+    ["qUser_staff_text","qUser_staff"],
+    ["qUser_parent_text","qUser_parent"],
+    ["qUser_external_text","qUser_external"],
+  ].forEach(([id,key])=>{
+    const el = document.getElementById(id);
+    if (el) el.textContent = t[key];
   });
 
-  // Q1 captions
+  // Q0 label + placeholder
+  document.getElementById("q0Label")?.replaceChildren(document.createTextNode(t.q0_label));
+  const first = q0?.querySelector("option[disabled]");
+  if (first) first.textContent = t.q0_placeholder;
+
+  // Q1 captions (ต้องมี .option-X span)
   [
     [".option-5 span", t.q1_5],
     [".option-4 span", t.q1_4],
     [".option-3 span", t.q1_3],
     [".option-2 span", t.q1_2],
     [".option-1 span", t.q1_1],
-  ].forEach(([sel, txt]) => {
+  ].forEach(([sel,txt])=>{
     const el = document.querySelector(sel);
     if (el) el.textContent = txt;
   });
-
-  // Q0 placeholder
-  if (q0) {
-    const first = q0.querySelector("option[disabled]");
-    if (first) first.textContent = t.q0_placeholder;
-  }
+  document.getElementById("q1Label")?.replaceChildren(document.createTextNode(t.q1_label));
 
   // Q2 texts
-  document.getElementById("q2Label")?.replaceChildren(document.createTextNode(I18N[lang].q2_label));
+  document.getElementById("q2Label")?.replaceChildren(document.createTextNode(t.q2_label));
   [
-    ["q2_opt_staff_text",   I18N[lang].q2_opt_staff],
-    ["q2_opt_delay_text",   I18N[lang].q2_opt_delay],
-    ["q2_opt_accuracy_text",I18N[lang].q2_opt_accuracy],
-    ["q2_opt_facility_text",I18N[lang].q2_opt_facility],
-    ["q2_opt_other_text",   I18N[lang].q2_opt_other],
-  ].forEach(([id, txt]) => {
+    ["q2_opt_staff_text", t.q2_opt_staff],
+    ["q2_opt_delay_text", t.q2_opt_delay],
+    ["q2_opt_accuracy_text", t.q2_opt_accuracy],
+    ["q2_opt_facility_text", t.q2_opt_facility],
+    ["q2_opt_other_text", t.q2_opt_other],
+  ].forEach(([id,txt]) => {
     const el = document.getElementById(id);
     if (el) el.textContent = txt;
   });
-
-  // Q2 other placeholder
   const q2OtherEl = document.getElementById("q2Other");
   if (q2OtherEl) {
     q2OtherEl.placeholder = (lang === "th")
@@ -538,32 +460,20 @@ function applyLang(lang) {
       : I18N.en.q2_other_placeholder;
   }
 
-  // Q3 placeholder
-  const q3 = document.getElementById("q3");
-  if (q3) q3.placeholder = t.q3_placeholder;
+  // Q3
+  document.getElementById("q3Label")?.replaceChildren(document.createTextNode(t.q3_label));
+  const q3 = document.getElementById("q3"); if (q3) q3.placeholder = t.q3_placeholder;
 
-  // Buttons & thank you
-  const submitBtn = document.getElementById("submitBtn");
-  if (submitBtn) submitBtn.textContent = t.submit;
-  document.querySelector("#thankYou h2")?.replaceChildren(document.createTextNode(t.thank_title));
-  const thanksP = document.querySelector("#thankYou p");
-  if (thanksP) thanksP.textContent = t.thank_desc;
-  const againBtn = document.getElementById("againBtn");
-  if (againBtn) againBtn.textContent = t.again;
-
-  // Active lang button
+  // ปุ่มภาษา active
   document.querySelectorAll(".lang-btn").forEach(b =>
     b.classList.toggle("active", b.dataset.lang === lang)
   );
 
-  // Reload Q0 options for the chosen language
+  // โหลด Q0 ใหม่ตามภาษา + อัปเดต error ที่กำลังโชว์อยู่
   loadServices();
-
-  // ✅ Update any visible error texts to current language
   updateErrorTexts();
 }
 
-// bind language buttons + initial
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".lang-btn").forEach(btn => {
     btn.addEventListener("click", () => applyLang(btn.dataset.lang));
