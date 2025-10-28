@@ -192,8 +192,25 @@ function updateErrorTexts() {
 
 /********************
  * Load Services (Q0)
- * รองรับ options เป็น string หรือ object {th,en}
+ * เก็บค่า value เป็น "ไทยเสมอ" เพื่อทำสรุปในชีทง่าย
+ * รองรับ options เป็น string (ไทยล้วน) หรือ object { th, en }
  ********************/
+
+// แปลง option เป็น { value, label } โดย:
+//   value = ไทย (canonical) เสมอ
+//   label = แสดงตามภาษา UI ปัจจุบัน
+function buildQ0OptionObj(item, lang) {
+  if (typeof item === "string") {
+    const v = item.trim();                 // ไทยล้วน
+    return { value: v, label: v };         // ไม่มี en ก็แสดงไทยไป
+  }
+  const th = (item?.th || "").trim();
+  const en = (item?.en || "").trim();
+  const value = th || en;                  // ถ้าไม่มี th จริง ๆ ค่อย fallback เป็น en
+  const label = (lang === "th") ? (th || en) : (en || th);
+  return { value, label };
+}
+
 async function loadServices() {
   try {
     q0.disabled = true;
@@ -202,14 +219,17 @@ async function loadServices() {
     const res = await fetch(JSON_URL + "?v=" + Date.now());
     const data = await res.json();
 
-    // toggle QUser by Features.UserType
-    const hasUserType = data?.Features?.UserType?.includes(DEPARTMENT);
+    // เปิด/ปิด QUser ตาม Features.UserType
+    const hasUserType = !!data?.Features?.UserType?.includes(DEPARTMENT);
     qUserSection?.classList.toggle("hidden", !hasUserType);
     if (!hasUserType) document.getElementById("qUserError")?.classList.add("hidden");
 
+    // ดึง config ของหน่วยงาน
     let conf = data[DEPARTMENT];
+    // เผื่อรูปแบบเก่าเป็น array ของ string ไทยล้วน
     if (Array.isArray(conf)) conf = { hasServices: true, options: conf };
 
+    // ไม่มี Q0 สำหรับหน่วยนี้
     if (!conf || conf.hasServices === false) {
       q0Section?.classList.add("hidden");
       q0.disabled = true;
@@ -219,21 +239,23 @@ async function loadServices() {
       return;
     }
 
-    // fill options
+    // เติม option: value=ไทยเสมอ, label=ตามภาษา UI
     q0.innerHTML = `<option value="" disabled selected>${I18N[CURRENT_LANG].q0_placeholder}</option>`;
     conf.options.forEach(item => {
-      const text = (typeof item === "string")
-        ? item
-        : (item[CURRENT_LANG] || item.th || item.en || "");
-      if (!text) return;
+      const { value, label } = buildQ0OptionObj(item, CURRENT_LANG);
+      if (!value || !label) return;
       const opt = document.createElement("option");
-      opt.value = text;      // เก็บตามที่เห็น
-      opt.textContent = text;
+      opt.value = value;       // ✅ ส่งไปชีทเป็น "ไทย" เสมอ
+      opt.textContent = label; // 👁️ เห็นตามภาษา UI
       q0.appendChild(opt);
     });
 
     q0.disabled = false;
     q0Section?.classList.remove("hidden");
+
+    // อัปเดต placeholder ของช่อง "ระบุเรื่องฯ" ให้ตรงภาษา
+    if (q0Other) q0Other.placeholder = I18N[CURRENT_LANG].q0_other_placeholder;
+
   } catch (err) {
     console.error("โหลด services.json ไม่ได้", err);
     q0Section?.classList.add("hidden");
@@ -243,7 +265,10 @@ async function loadServices() {
     q0Other.classList.add("hidden");
   }
 }
+
+// เรียกครั้งแรก
 loadServices();
+
 
 /********************
  * QUser
