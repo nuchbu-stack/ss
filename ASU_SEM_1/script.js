@@ -116,7 +116,7 @@ function renderHeader(lang = "th") {
 }
 
 let CURRENT_LANG = localStorage.getItem("lang") || "th";
-let currentLang = "th";
+
 renderHeader(currentLang);
 
 
